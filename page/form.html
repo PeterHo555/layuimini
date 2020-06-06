@@ -42,8 +42,8 @@
                 <label class="layui-form-label">选择监测区</label>
                 <div class="layui-input-block">
                     <select name="interest" lay-filter="aihao">
-                        <option value=""></option>
-                        <option value="1" selected="">西乡塘区</option>
+                        <option value="" selected=""></option>
+                        <option value="1">西乡塘区</option>
                         <option value="2">良庆区</option>
                         <option value="3">江南区</option>
                         <option value="4">青秀区</option>
@@ -332,10 +332,10 @@
 
         //监听指定开关
         form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+            layer.msg('主机已' + (this.checked ? '开启' : '关闭'), {
                 offset: '6px'
             });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+            // layer.tips('温馨提示：已停止主机运行', data.othis)
         });
 
         //监听提交

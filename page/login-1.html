@@ -41,13 +41,13 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username" for="username"></label>
-                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" value="admin">
+                    <input type="text" id="loginName" name="loginName" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" value="admin">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-password" for="password"></label>
-                    <input type="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" value="123456">
+                    <input type="password" id="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" value="123456">
                 </div>
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label class="layui-icon layui-icon-vercode" for="captcha"></label>
                     <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
                     <div class="captcha-img">
@@ -56,7 +56,7 @@
                 </div>
                 <div class="layui-form-item">
                     <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住密码">
-                </div>
+                </div> -->
                 <div class="layui-form-item">
                     <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
                 </div>
@@ -68,9 +68,10 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
 <script>
-    layui.use(['form'], function () {
-        var form = layui.form,
-            layer = layui.layer;
+    layui.use(['form','jquery'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var layer = layui.layer;
 
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
@@ -82,24 +83,45 @@
                 lineColor:'#7ec7fd'
             });
         });
-
+        // if (data.loginName == '') {
+        //     layer.msg('登陆名不能为空');
+        //     return false;
+        // }
+        // if (data.password == '') {
+        //     layer.msg('密码不能为空');
+        //     return false;
+        // }
+        // if (data.captcha == '') {
+        //     layer.msg('验证码不能为空');
+        //     return false;
+        // }
         // 进行登录操作
         form.on('submit(login)', function (data) {
-            data = data.field;
-            if (data.username == '') {
-                layer.msg('用户名不能为空');
-                return false;
-            }
-            if (data.password == '') {
-                layer.msg('密码不能为空');
-                return false;
-            }
-            if (data.captcha == '') {
-                layer.msg('验证码不能为空');
-                return false;
-            }
-            layer.msg('登录成功', function () {
-                window.location = '../index.html';
+            dataJson = data.field;
+            console.log(dataJson);
+            $.ajax({
+                type : 'post',
+                url : 'http://localhost:8183/userLogin',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                data : dataJson,
+                dataType : 'json',
+                success : function (result) {
+                    if (result.message == 200){
+                        // document.cookie = result.userData;
+                        sessionStorage.setItem("loginName",result.userData.loginName.toString());
+                        sessionStorage.setItem("username",result.userData.username.toString());
+                        sessionStorage.setItem("phone",result.userData.phone.toString());
+                        sessionStorage.setItem("email",result.userData.email.toString());
+                        sessionStorage.setItem("userType",result.userData.userType.toString());
+                        window.location.href = "../index.html";
+                    }else if (result.message == 100){
+                        alert('用户名不存在');
+                        return;
+                    }else if (result.message == 101){
+                        alert('密码错误');
+                        return;
+                    }
+                }
             });
             return false;
         });

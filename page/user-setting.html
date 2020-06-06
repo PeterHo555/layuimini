@@ -18,28 +18,36 @@
 
         <div class="layui-form layuimini-form">
             <div class="layui-form-item">
-                <label class="layui-form-label required">管理账号</label>
+                <label class="layui-form-label required">用户类型</label>
                 <div class="layui-input-block">
-                    <input type="text" name="username" lay-verify="required" lay-reqtext="管理账号不能为空" placeholder="请输入管理账号"  value="admin" class="layui-input">
-                    <tip>填写自己管理账号的名称。</tip>
+                    <input type="text" name="userType" id="userType" lay-verify="required" lay-reqtext="管理账号不能为空" placeholder="请输入管理账号"  value=" " readonly class="layui-input">
+                    <tip>用户类型不可修改</tip>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">登录名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="loginName" id="loginName" lay-verify="required" lay-reqtext="管理账号不能为空" placeholder="请输入管理账号"  value=" " readonly class="layui-input">
+                    <tip>登录名不可修改</tip>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" id="username" lay-verify="required" lay-reqtext="管理账号不能为空" placeholder="请输入管理账号"  value=" " class="layui-input">
+                    <tip>填写自己账号的显示名称。</tip>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">手机</label>
                 <div class="layui-input-block">
-                    <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机"  value="" class="layui-input">
+                    <input type="text" name="phone" id="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机"  value=" " class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">邮箱</label>
                 <div class="layui-input-block">
-                    <input type="email" name="email"  placeholder="请输入邮箱"  value="" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">备注信息</label>
-                <div class="layui-input-block">
-                    <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+                    <input type="text" name="email" id="email"  placeholder="请输入邮箱"  value=" " class="layui-input">
                 </div>
             </div>
 
@@ -55,6 +63,22 @@
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
     layui.use(['form','miniTab'], function () {
+        var userType = document.getElementById("userType");
+        var loginName = document.getElementById("loginName");
+        var username = document.getElementById("username");
+        var phone = document.getElementById("phone");
+        var email = document.getElementById("email");
+        if(sessionStorage.getItem("userType").toString() == '1'){
+            userType.value = "管理员用户";
+        }else{
+            userType.value = "管理员用户";
+        }
+        loginName.value = sessionStorage.getItem("loginName").toString();
+        username.value = sessionStorage.getItem("username").toString();
+        phone.value = sessionStorage.getItem("phone").toString();
+        email.value = sessionStorage.getItem("email").toString();
+
+
         var form = layui.form,
             layer = layui.layer,
             miniTab = layui.miniTab;
