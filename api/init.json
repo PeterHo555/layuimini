@@ -22,25 +22,25 @@
           "target": "_self"
         },
         {
-          "title": "报警记录",
+          "title": "系统记录",
           "href": "",
           "icon": "fa fa-home",
           "target": "_self",
           "child": [
             {
-              "title": "主机状态",
+              "title": "警报记录",
               "href": "page/table-1.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },
             {
-              "title": "报警记录",
+              "title": "管理员日志",
               "href": "page/table-2.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },
             {
-              "title": "网络记录",
+              "title": "主机状态",
               "href": "page/table-3.html",
               "icon": "fa fa-tachometer",
               "target": "_self"

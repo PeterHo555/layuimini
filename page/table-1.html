@@ -19,25 +19,25 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
+                            <label class="layui-form-label">警报ID</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
+                            <label class="layui-form-label">主机</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="sex" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户城市</label>
+                            <label class="layui-form-label">管理员</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="city" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户职业</label>
+                            <label class="layui-form-label">区域</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="classify" autocomplete="off" class="layui-input">
                             </div>
@@ -75,7 +75,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: 'http://localhost:8183/userlist',
+            url: 'http://localhost:8183/alarmlist',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -85,12 +85,12 @@
             cols: [[
                 {type: "checkbox", width: 50},
                 {field: 'id', width: 150, title: 'ID', sort: true},
-                {field: 'loginName', width: 200, title: '登录名'},
-                {field: 'password', width: 200, title: '密码',},
-                {field: 'username', width: 200, title: '用户名'},
-                {field: 'email', title: '邮箱', minWidth: 200},
-                {field: 'phone', width: 200, title: '电话'},
-                {field: 'userType', width: 200, title: '用户类型', sort: true},
+                {field: 'alarmId', width: 200, title: '警报号', sort: true},
+                {field: 'hostId', width: 200, title: '主机号', sort: true},
+                {field: 'alarmTime', width: 200, title: '警报时间', sort: true},
+                {field: 'districtName', title: '区域名', minWidth: 200},
+                {field: 'temperature', width: 200, title: '警报温度', sort: true},
+                {field: 'adminName', width: 200, title: '所属管理员'},
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
