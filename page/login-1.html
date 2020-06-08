@@ -37,7 +37,7 @@
         <div class="layui-form login-form">
             <form class="layui-form" action="">
                 <div class="layui-form-item logo-title">
-                    <h1>LayuiMini后台登录</h1>
+                    <h1>电缆测温系统后台登录</h1>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username" for="username"></label>
@@ -115,10 +115,10 @@
                         sessionStorage.setItem("userType",result.userData.userType.toString());
                         window.location.href = "../index.html";
                     }else if (result.message == 100){
-                        alert('用户名不存在');
+                        layer.msg('用户名不存在');
                         return;
                     }else if (result.message == 101){
-                        alert('密码错误');
+                        layer.msg('密码错误');
                         return;
                     }
                 }

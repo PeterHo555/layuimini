@@ -60,12 +60,6 @@
           "target": "_self"
         },
         {
-          "title": "表格示例",
-          "href": "page/table.html",
-          "icon": "fa fa-file-text",
-          "target": "_self"
-        },
-        {
           "title": "主机管理",
           "href": "",
           "icon": "fa fa-calendar",
@@ -79,7 +73,7 @@
             },
             {
               "title": "新建节点",
-              "href": "page/form-step.html",
+              "href": "page/form-node.html",
               "icon": "fa fa-navicon",
               "target": "_self"
             }
@@ -93,13 +87,13 @@
           "child": [
             {
               "title": "地区1",
-              "href": "page/button.html",
+              "href": "page/map1.html",
               "icon": "fa fa-snowflake-o",
               "target": "_self"
             },
             {
               "title": "地区2",
-              "href": "page/layer.html",
+              "href": "page/map2.html",
               "icon": "fa fa-shield",
               "target": "_self"
             }

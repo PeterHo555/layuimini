@@ -25,23 +25,34 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">输入主机号</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入主机号" class="layui-input">
+                    <input type="text" name="hostId" lay-verify="title" autocomplete="off" placeholder="请输入主机号" class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">输入管理员</label>
+            <!-- <div class="layui-form-item">
+                <label class="layui-form-label">选择所属管理员</label>
                 <div class="layui-input-block">
                     <input type="text" name="username" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
+            </div> -->
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择所属管理员</label>
+                <div class="layui-input-block">
+                    <select name="adminId" id="adminId" lay-filter="aihao">
+                        <option value="" selected=""></option>
+                        <option value="1">PeterHo</option>
+                        <option value="2">JayChou</option>
+                        <option value="1">AmyLee</option>
+                        <option value="2">LeoPang</option>
+                    </select>
+                </div>
             </div>
-
 
 
 
             <div class="layui-form-item">
                 <label class="layui-form-label">选择监测区</label>
                 <div class="layui-input-block">
-                    <select name="interest" lay-filter="aihao">
+                    <select name="districtId" id="districtId" lay-filter="aihao">
                         <option value="" selected=""></option>
                         <option value="1">西乡塘区</option>
                         <option value="2">良庆区</option>
@@ -75,7 +86,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">是否开启监测</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                    <input type="checkbox" checked="" name="hostState" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
                 </div>
             </div>
             <!-- <div class="layui-form-item">
@@ -297,11 +308,15 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
-    layui.use(['form', 'layedit', 'laydate'], function () {
+    
+    
+    layui.use(['form', 'layedit', 'laydate','layer'], function () {
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
             , laydate = layui.laydate;
+
+        var $ = layui.jquery;
 
         //日期
         laydate.render({
@@ -311,24 +326,60 @@
             elem: '#date1'
         });
 
+    //    json控制option的值，有bug
+        // layer.ready(function () {
+        //     // alert("895553666")
+        //     $.ajax({
+        //         type : 'post',
+        //         url : 'http://localhost:8183/users',
+        //         dataType : 'json',
+        //         success : function (result){
+        //             console.log(result);
+        //             var dataHtml1='<option value="" selected=""></option>';
+        //             for(var i=0;i<result.length;i++){
+        //                 dataHtml1 +=
+        //                 '<option value="'+ result[i].userId+'">'+result[i].userName +'</option>';
+        //             }
+        //             console.log(dataHtml1)
+        //             $("#username").html(dataHtml1);
+        //         }
+        //     });
+        //     $.ajax({
+        //         type : 'post',
+        //         url : 'http://localhost:8183/districts',
+        //         dataType : 'json',
+        //         success : function (result){
+        //             var $ = layui.jquery;
+        //             console.log(result);
+        //             var dataHtml2='<option value="" selected=""></option>';
+        //             for(var i=0;i<result.length;i++){
+        //                 dataHtml2 +=
+        //                 '<option value="'+ result[i].districtId+'">'+result[i].districtName +'</option>';
+        //             }
+        //             console.log(dataHtml2)
+        //             $("#district").html(dataHtml2);
+        //         }
+        //     });
+        // });
+
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
 
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '标题至少得5个字符啊';
-                }
-            }
-            , pass: [
-                /^[\S]{6,12}$/
-                , '密码必须6到12位，且不能出现空格'
-            ]
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
+        // //自定义验证规则
+        // form.verify({
+        //     title: function (value) {
+        //         if (value.length < 5) {
+        //             return '标题至少得5个字符啊';
+        //         }
+        //     }
+        //     , pass: [
+        //         /^[\S]{6,12}$/
+        //         , '密码必须6到12位，且不能出现空格'
+        //     ]
+        //     , content: function (value) {
+        //         layedit.sync(editIndex);
+        //     }
+        // });
 
         //监听指定开关
         form.on('switch(switchTest)', function (data) {
@@ -343,6 +394,18 @@
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             })
+            dataJson = data.field;
+            console.log(dataJson);
+            $.ajax({
+                type : 'post',
+                url : 'http://localhost:8183/addhost',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                data : dataJson,
+                dataType : 'json',
+                success : function (result){
+                    
+                }
+            });
             return false;
         });
 
