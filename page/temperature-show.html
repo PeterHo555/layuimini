@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs12 layui-col-md12">
+                <div id="echarts-gauge1" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs12 layui-col-md12">
+                <div id="echarts-gauge2" style="background-color:#ffffff;min-height:500px;padding: 10px"></div>
+            </div>
+        </div>
+        <!-- <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs12 layui-col-md12">
+                <div id="echarts-gauge3" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs12 layui-col-md12">
+                <div id="echarts-gauge4" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs12 layui-col-md12">
+                <div id="echarts-gauge5" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../js/lay-module/echarts/echartsTheme.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use(['layer', 'echarts'], function () { //独立版的layer无需执行这一句
+        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+        var echartsGuage1 = echarts.init(document.getElementById('echarts-gauge1'), 'walden');
+        
+        var optionGuage1 = {
+            title: {
+                text: '各区域近两年情况',
+                left: 'left'
+            },
+            legend: {},
+            tooltip: {},
+            dataset: {
+                dimensions: ['product', '2019', '2020'],
+                data: ['西乡塘区', '良庆区', '江南区', '青秀区', '邕宁区', '武鸣区','兴宁区'],
+                source: [
+                    {product: '西乡塘区', '2019': 43.3, '2020': 85.8},
+                    {product: '良庆区', '2019': 83.1, '2020': 73.4},
+                    {product: '江南区', '2019': 86.4, '2020': 65.2},
+                    {product: '青秀区', '2019': 72.4, '2020': 53.9},
+                    {product: '邕宁区', '2019': 83.1, '2020': 73.4},
+                    {product: '武鸣区', '2019': 86.4, '2020': 65.2},
+                    {product: '兴宁区', '2019': 72.4, '2020': 53.9}
+                ]
+            },
+            xAxis: {type: 'category'},
+            yAxis: {},
+            // Declare several bar series, each will be mapped
+            // to a column of dataset.source by default.
+            series: [
+                {type: 'bar'},
+                {type: 'bar'},
+            ]
+        };
+        echartsGuage1.setOption(optionGuage1);
+
+
+        var echartsGauge2 = echarts.init(document.getElementById('echarts-gauge2'), 'walden');
+
+        var optionGauge2 = {
+            title: {
+                text: '设备温度',
+                subtext: '数据来自传感器监测'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            // legend: {
+            //     data: ['摄氏度']
+            // },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+                type: 'category',
+                data: ['设备1', '设备2', '设备3', '设备4', '设备5',]
+            },
+            series: [
+                {
+                    name: '摄氏度',
+                    type: 'bar',
+                    data: [25, 25, 25, 25, 25]
+                },
+            ]
+        };
+
+        //
+
+        setInterval(function () {
+            optionGauge2.series[0].data[0] = (Math.random() * 100).toFixed(2) - 0;
+            optionGauge2.series[0].data[1] = (Math.random() * 100).toFixed(2) - 0;
+            optionGauge2.series[0].data[2] = (Math.random() * 100).toFixed(2) - 0;
+            optionGauge2.series[0].data[3] = (Math.random() * 100).toFixed(2) - 0;
+            optionGauge2.series[0].data[4] = (Math.random() * 100).toFixed(2) - 0;
+            layer.msg('设备出现温度异常', {
+                    time: 30000, //30s后自动关闭
+                    btn: ['收到，立刻排查', '已排查']
+                });
+            // if(optionGauge2.series[0].data[0] > 40){
+            //     layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
+            //         time: 20000, //20s后自动关闭
+            //         btn: ['明白了', '知道了', '哦']
+            //     });
+            // }
+            // if(optionGauge2.series[0].data[1] > 40){
+            //     alert("警告,设备2温度异常")
+            // }
+            // if(optionGauge2.series[0].data[2] > 40){
+            //     alert("警告,设备3温度异常")
+            // }
+            // if(optionGauge2.series[0].data[3] > 40){
+            //     alert("警告,设备4温度异常")
+            // }
+            // if(optionGauge2.series[0].data[4] > 40){
+            //     alert("警告,设备5温度异常")
+            // }
+            echartsGauge2.setOption(optionGauge2, true);
+        },10000);
+        
+
+        // var echartsGauge2 = echarts.init(document.getElementById('echarts-gauge2'), 'walden');
+
+        // var optionGauge2 = {
+        //     tooltip: {
+        //         formatter: '{a} <br/>{b} : {c}%'
+        //     },
+        //     toolbox: {
+        //         feature: {
+        //             restore: {},
+        //             saveAsImage: {}
+        //         }
+        //     },
+        //      series: [
+        //         {
+        //             name: '业务指标',
+        //             type: 'gauge',
+        //             detail: {formatter: '{value} ­°C'},
+        //             data: [{value: 50, name: '摄氏度'}]
+        //         }
+        //     ]
+        // };
+
+        // setInterval(function () {
+        //     optionGauge2.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+        //     echartsGauge2.setOption(optionGauge2, true);
+        // },2000);
+        echartsGauge2.setOption(optionGauge2, true);
+
+
+
+
+        //触发事件
+        var active = {
+            setTop: function () {
+                var that = this;
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '当你选择该窗体时，即会在最顶端'
+                    , area: ['390px', '260px']
+                    , shade: 0
+                    , maxmin: true
+                    , offset: [ //为了演示，随机坐标
+                        Math.random() * ($(window).height() - 300)
+                        , Math.random() * ($(window).width() - 390)
+                    ]
+                    , content: '//layer.layui.com/test/settop.html'
+                    , btn: ['继续弹出', '全部关闭'] //只是为了演示
+                    , yes: function () {
+                        $(that).click();
+                    }
+                    , btn2: function () {
+                        layer.closeAll();
+                    }
+
+                    , zIndex: layer.zIndex //重点1
+                    , success: function (layero) {
+                        layer.setTop(layero); //重点2
+                    }
+                });
+            }
+            , confirmTrans: function () {
+                //配置一个透明的询问框
+                layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
+                    time: 20000, //20s后自动关闭
+                    btn: ['明白了', '知道了', '哦']
+                });
+            }
+            , notice: function () {
+                //示范一个公告层
+                layer.open({
+                    type: 1
+                    , title: false //不显示标题栏
+                    , closeBtn: false
+                    , area: '300px;'
+                    , shade: 0.8
+                    , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    , btn: ['火速围观', '残忍拒绝']
+                    , btnAlign: 'c'
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
+                    , success: function (layero) {
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: 'http://www.layui.com/'
+                            , target: '_blank'
+                        });
+                    }
+                });
+            }
+            , offset: function (othis) {
+                var type = othis.data('type')
+                    , text = othis.text();
+
+                layer.open({
+                    type: 1
+                    , offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                    , id: 'layerDemo' + type //防止重复弹出
+                    , content: '<div style="padding: 20px 100px;">' + text + '</div>'
+                    , btn: '关闭全部'
+                    , btnAlign: 'c' //按钮居中
+                    , shade: 0 //不显示遮罩
+                    , yes: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        };
+
+        $('#layerDemo .layui-btn').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+    });
+</script>
+
+</body>
+</html>

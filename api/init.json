@@ -48,6 +48,65 @@
           ]
         },
         {
+          "title": "实时监测",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "设备温度",
+              "href": "page/temperature-show.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "设备功率",
+              "href": "page/power-show.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "温度记录",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "地区1记录",
+              "href": "page/temperature-1.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "地区2记录",
+              "href": "page/temperature-2.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "地区3记录",
+              "href": "page/temperature-3.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "地区4记录",
+              "href": "page/temperature-4.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "地区5记录",
+              "href": "page/temperature-5.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+            
+          ]
+        },
+        {
           "title": "菜单管理",
           "href": "page/menu.html",
           "icon": "fa fa-window-maximize",
