@@ -124,15 +124,36 @@
         //
 
         setInterval(function () {
-            optionGauge2.series[0].data[0] = (Math.random() * 100).toFixed(2) - 0;
-            optionGauge2.series[0].data[1] = (Math.random() * 100).toFixed(2) - 0;
-            optionGauge2.series[0].data[2] = (Math.random() * 100).toFixed(2) - 0;
-            optionGauge2.series[0].data[3] = (Math.random() * 100).toFixed(2) - 0;
-            optionGauge2.series[0].data[4] = (Math.random() * 100).toFixed(2) - 0;
-            layer.msg('设备出现温度异常', {
-                    time: 30000, //30s后自动关闭
-                    btn: ['收到，立刻排查', '已排查']
-                });
+            // 此处写ajax请求实时测温数据
+            $.ajax({
+                type : 'put',
+                url : 'http://localhost:8183/temperature',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                dataType : 'json',
+                success : function (result) {
+                    // console.log(result);
+                    console.log(result.data[4].temperature);
+                    if (result.message == "200"){
+                        console.log(result.data);
+                        optionGauge2.series[0].data[0] = result.data[0].temperature;
+                        optionGauge2.series[0].data[1] = result.data[1].temperature;
+                        optionGauge2.series[0].data[2] = result.data[2].temperature;
+                        optionGauge2.series[0].data[3] = result.data[3].temperature;
+                        optionGauge2.series[0].data[4] = result.data[4].temperature;
+                        // if(optionGauge2.series[0].data[0] > 40){
+                        //     layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
+                        //         time: 20000, //20s后自动关闭
+                        //         btn: ['明白了', '知道了', '哦']
+                        //     });
+                        // }
+                    }else if (result == "100"){
+                        layer.msg("信息获取失败");
+                        return;
+                    }
+                }
+            });
+    
+            
             // if(optionGauge2.series[0].data[0] > 40){
             //     layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
             //         time: 20000, //20s后自动关闭
@@ -152,7 +173,7 @@
             //     alert("警告,设备5温度异常")
             // }
             echartsGauge2.setOption(optionGauge2, true);
-        },10000);
+        },30000);
         
 
         // var echartsGauge2 = echarts.init(document.getElementById('echarts-gauge2'), 'walden');
