@@ -19,7 +19,7 @@
         </div>
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs12 layui-col-md12">
-                <div id="echarts-gauge2" style="background-color:#ffffff;min-height:500px;padding: 10px"></div>
+                <div id="echarts-gauge2" style="background-color:#ffffff;min-height:450px;padding: 10px"></div>
             </div>
         </div>
         <!-- <div class="layui-row layui-col-space15">
@@ -120,7 +120,8 @@
                 },
             ]
         };
-
+        
+        echartsGauge2.setOption(optionGauge2, true);
         //
 
         setInterval(function () {
@@ -140,69 +141,60 @@
                         optionGauge2.series[0].data[2] = result.data[2].temperature;
                         optionGauge2.series[0].data[3] = result.data[3].temperature;
                         optionGauge2.series[0].data[4] = result.data[4].temperature;
-                        // if(optionGauge2.series[0].data[0] > 40){
-                        //     layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
-                        //         time: 20000, //20s后自动关闭
-                        //         btn: ['明白了', '知道了', '哦']
-                        //     });
+
+                       
+                        // for(const i = 0; i < 5; i++){
+                        //     if(optionGauge2.series[0].data[i] > 30){
+                        //         layer.msg('设备温度出现异常', {
+                        //             time: 20000, //20s后自动关闭
+                        //             btn: ['明白了', '知道了', '哦']
+                        //         });
+                        //     }
                         // }
+                        
+                        if(optionGauge2.series[0].data[0] > 30){
+                            layer.msg('设备1温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(optionGauge2.series[0].data[1] > 30){
+                            layer.msg('设备2温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(optionGauge2.series[0].data[2] > 30){
+                            layer.msg('设备3温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(optionGauge2.series[0].data[3] > 30){
+                            layer.msg('设备4温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(optionGauge2.series[0].data[4] > 30){
+                            layer.msg('设备5温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+
                     }else if (result == "100"){
                         layer.msg("信息获取失败");
                         return;
                     }
                 }
-            });
-    
-            
-            // if(optionGauge2.series[0].data[0] > 40){
-            //     layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
-            //         time: 20000, //20s后自动关闭
-            //         btn: ['明白了', '知道了', '哦']
-            //     });
-            // }
-            // if(optionGauge2.series[0].data[1] > 40){
-            //     alert("警告,设备2温度异常")
-            // }
-            // if(optionGauge2.series[0].data[2] > 40){
-            //     alert("警告,设备3温度异常")
-            // }
-            // if(optionGauge2.series[0].data[3] > 40){
-            //     alert("警告,设备4温度异常")
-            // }
-            // if(optionGauge2.series[0].data[4] > 40){
-            //     alert("警告,设备5温度异常")
-            // }
+            }); 
             echartsGauge2.setOption(optionGauge2, true);
-        },30000);
+        },3000);
         
 
-        // var echartsGauge2 = echarts.init(document.getElementById('echarts-gauge2'), 'walden');
-
-        // var optionGauge2 = {
-        //     tooltip: {
-        //         formatter: '{a} <br/>{b} : {c}%'
-        //     },
-        //     toolbox: {
-        //         feature: {
-        //             restore: {},
-        //             saveAsImage: {}
-        //         }
-        //     },
-        //      series: [
-        //         {
-        //             name: '业务指标',
-        //             type: 'gauge',
-        //             detail: {formatter: '{value} ­°C'},
-        //             data: [{value: 50, name: '摄氏度'}]
-        //         }
-        //     ]
-        // };
-
-        // setInterval(function () {
-        //     optionGauge2.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
-        //     echartsGauge2.setOption(optionGauge2, true);
-        // },2000);
-        echartsGauge2.setOption(optionGauge2, true);
+    
+        
 
 
 
