@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+  <link rel="stylesheet" href="../css/public.css" media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body> 
+ 
+<div class="demoTable">
+  搜索ID：
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+ 
+<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table> 
+               
+          
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+  
+  //方法级渲染
+  table.render({
+    elem: '#LAY_table_user',
+    url: 'http://localhost:8183/alarmlist',
+              cols: [[
+                  {type: "checkbox", width: 50},
+                  {field: 'id', width: 100, title: 'ID', sort: true},
+                  {field: 'alarmId', width: 100, title: '警报号', sort: true},
+                  {field: 'hostId', width: 100, title: '主机号', sort: true},
+                  {field: 'alarmTime', width: 200, title: '警报时间', sort: true},
+                  {field: 'districtName', title: '区域名', minWidth: 200},
+                  {field: 'temperature', width: 200, title: '警报温度', sort: true},
+                  {field: 'adminName', width: 200, title: '所属管理员'},
+                  {field: 'state', width: 200, title: '排查状态'},
+                  {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+              ]],
+    limits: [10, 15, 20, 25, 50, 100],
+    limit: 15,
+    skin: 'line'
+    ,id: 'testReload'
+    ,page: true
+    ,height: 310
+  });
+  
+  var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#demoReload');
+      
+      //执行重载
+      table.reload('testReload', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          key: {
+            id: demoReload.val()
+          }
+        }
+      }, 'data');
+    }
+  };
+  
+  $('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>
+
+</body>
+</html>

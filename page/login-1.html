@@ -108,8 +108,9 @@
                 success : function (result) {
                     if (result.message == 200){
                         // document.cookie = result.userData;
+                        sessionStorage.setItem("userId",result.userData.userId.toString());
                         sessionStorage.setItem("loginName",result.userData.loginName.toString());
-                        sessionStorage.setItem("username",result.userData.username.toString());
+                        sessionStorage.setItem("userName",result.userData.username.toString());
                         sessionStorage.setItem("phone",result.userData.phone.toString());
                         sessionStorage.setItem("email",result.userData.email.toString());
                         sessionStorage.setItem("userType",result.userData.userType.toString());

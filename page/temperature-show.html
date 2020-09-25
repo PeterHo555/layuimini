@@ -7,14 +7,95 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" href="../css/public.css" media="all">
 </head>
+
+<style>
+    .layui-top-box {padding:40px 20px 20px 20px;color:#fff}
+    .panel {margin:15px;background-color:#fff;border:1px solid transparent;border-radius:3px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}
+    .panel-body {padding:15px}
+    .panel-title {margin-top:0;margin-bottom:0;font-size:14px;color:inherit}
+    .label {display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em; margin-top: .3em;}
+    .layui-red {color:red}
+    .main_btn > p {height:40px;}
+</style>
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
         <div class="layui-row layui-col-space15">
-            <div class="layui-col-xs12 layui-col-md12">
-                <div id="echarts-gauge1" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+            <div class="layui-col-xs12 layui-col-md12 layui-top-box">
+                <!-- <div id="echarts-gauge1" style="background-color:#ffffff;min-height:300px;padding: 10px"></div> -->
+                <div class="layui-col-md3">
+                    <div class="col-xs-6 col-md-3">
+                        <div class="panel layui-bg-cyan">
+                            <div class="panel-body">
+                                <div class="panel-title">
+                                    <span class="label pull-right layui-bg-blue">实时</span>
+                                    <h5>系统测温总记录数</h5>
+                                </div>
+                                <div class="panel-content">
+                                    <h1 class="no-margins">1234</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <small>当前测温总记录数</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="layui-col-md3">
+                    <div class="col-xs-6 col-md-3">
+                        <div class="panel layui-bg-blue">
+                            <div class="panel-body">
+                                <div class="panel-title">
+                                    <span class="label pull-right layui-bg-cyan">实时</span>
+                                    <h5>温度异常总数</h5>
+                                </div>
+                                <div class="panel-content">
+                                    <h1 class="no-margins">1234</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <small>当前温度异常数</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="layui-col-md3">
+                    <div class="col-xs-6 col-md-3">
+                        <div class="panel layui-bg-green">
+                            <div class="panel-body">
+                                <div class="panel-title">
+                                    <span class="label pull-right layui-bg-orange">实时</span>
+                                    <h5>未处理异常数</h5>
+                                </div>
+                                <div class="panel-content">
+                                    <h1 class="no-margins">1234</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <small>当前分类总记录数</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                    <div class="col-xs-6 col-md-3">
+                        <div class="panel layui-bg-orange">
+                            <div class="panel-body">
+                                <div class="panel-title">
+                                    <span class="label pull-right layui-bg-green">实时</span>
+                                    <h5>已处理异常数</h5>
+                                </div>
+                                <div class="panel-content">
+                                    <h1 class="no-margins">1234</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <small>当前分类总记录数</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="layui-row layui-col-space15">
@@ -22,21 +103,6 @@
                 <div id="echarts-gauge2" style="background-color:#ffffff;min-height:450px;padding: 10px"></div>
             </div>
         </div>
-        <!-- <div class="layui-row layui-col-space15">
-            <div class="layui-col-xs12 layui-col-md12">
-                <div id="echarts-gauge3" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
-            </div>
-        </div>
-        <div class="layui-row layui-col-space15">
-            <div class="layui-col-xs12 layui-col-md12">
-                <div id="echarts-gauge4" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
-            </div>
-        </div>
-        <div class="layui-row layui-col-space15">
-            <div class="layui-col-xs12 layui-col-md12">
-                <div id="echarts-gauge5" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
-            </div>
-        </div> -->
     </div>
 </div>
 
@@ -48,38 +114,38 @@
     layui.use(['layer', 'echarts'], function () { //独立版的layer无需执行这一句
         var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 
-        var echartsGuage1 = echarts.init(document.getElementById('echarts-gauge1'), 'walden');
+        // var echartsGuage1 = echarts.init(document.getElementById('echarts-gauge1'), 'walden');
         
-        var optionGuage1 = {
-            title: {
-                text: '各区域近两年情况',
-                left: 'left'
-            },
-            legend: {},
-            tooltip: {},
-            dataset: {
-                dimensions: ['product', '2019', '2020'],
-                data: ['西乡塘区', '良庆区', '江南区', '青秀区', '邕宁区', '武鸣区','兴宁区'],
-                source: [
-                    {product: '西乡塘区', '2019': 43.3, '2020': 85.8},
-                    {product: '良庆区', '2019': 83.1, '2020': 73.4},
-                    {product: '江南区', '2019': 86.4, '2020': 65.2},
-                    {product: '青秀区', '2019': 72.4, '2020': 53.9},
-                    {product: '邕宁区', '2019': 83.1, '2020': 73.4},
-                    {product: '武鸣区', '2019': 86.4, '2020': 65.2},
-                    {product: '兴宁区', '2019': 72.4, '2020': 53.9}
-                ]
-            },
-            xAxis: {type: 'category'},
-            yAxis: {},
-            // Declare several bar series, each will be mapped
-            // to a column of dataset.source by default.
-            series: [
-                {type: 'bar'},
-                {type: 'bar'},
-            ]
-        };
-        echartsGuage1.setOption(optionGuage1);
+        // var optionGuage1 = {
+        //     title: {
+        //         text: '各区域近两年情况',
+        //         left: 'left'
+        //     },
+        //     legend: {},
+        //     tooltip: {},
+        //     dataset: {
+        //         dimensions: ['product', '2019', '2020'],
+        //         data: ['西乡塘区', '良庆区', '江南区', '青秀区', '邕宁区', '武鸣区','兴宁区'],
+        //         source: [
+        //             {product: '西乡塘区', '2019': 43.3, '2020': 85.8},
+        //             {product: '良庆区', '2019': 83.1, '2020': 73.4},
+        //             {product: '江南区', '2019': 86.4, '2020': 65.2},
+        //             {product: '青秀区', '2019': 72.4, '2020': 53.9},
+        //             {product: '邕宁区', '2019': 83.1, '2020': 73.4},
+        //             {product: '武鸣区', '2019': 86.4, '2020': 65.2},
+        //             {product: '兴宁区', '2019': 72.4, '2020': 53.9}
+        //         ]
+        //     },
+        //     xAxis: {type: 'category'},
+        //     yAxis: {},
+        //     // Declare several bar series, each will be mapped
+        //     // to a column of dataset.source by default.
+        //     series: [
+        //         {type: 'bar'},
+        //         {type: 'bar'},
+        //     ]
+        // };
+        // echartsGuage1.setOption(optionGuage1);
 
 
         var echartsGauge2 = echarts.init(document.getElementById('echarts-gauge2'), 'walden');
@@ -95,9 +161,9 @@
                     type: 'shadow'
                 }
             },
-            // legend: {
-            //     data: ['摄氏度']
-            // },
+            legend: {
+                data: ['摄氏度']
+            },
             grid: {
                 left: '3%',
                 right: '4%',
@@ -141,16 +207,6 @@
                         optionGauge2.series[0].data[2] = result.data[2].temperature;
                         optionGauge2.series[0].data[3] = result.data[3].temperature;
                         optionGauge2.series[0].data[4] = result.data[4].temperature;
-
-                       
-                        // for(const i = 0; i < 5; i++){
-                        //     if(optionGauge2.series[0].data[i] > 30){
-                        //         layer.msg('设备温度出现异常', {
-                        //             time: 20000, //20s后自动关闭
-                        //             btn: ['明白了', '知道了', '哦']
-                        //         });
-                        //     }
-                        // }
                         
                         if(optionGauge2.series[0].data[0] > 30){
                             layer.msg('设备1温度出现异常', {
@@ -190,7 +246,7 @@
                 }
             }); 
             echartsGauge2.setOption(optionGauge2, true);
-        },3000);
+        },60000);
         
 
     

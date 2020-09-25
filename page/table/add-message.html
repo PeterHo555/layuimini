@@ -17,41 +17,38 @@
 <body>
 <div class="layui-form layuimini-form">
     <div class="layui-form-item">
-        <label class="layui-form-label required">用户名</label>
+        <label class="layui-form-label required">用户ID</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+            <input type="text" name="thisUserId" id="thisUserId" readonly lay-verify="required" lay-reqtext="用户ID不能为空" placeholder="请输入用户ID" value="" class="layui-input">
             <tip>填写自己管理账号的名称。</tip>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">性别</label>
+        <label class="layui-form-label required">用户名</label>
         <div class="layui-input-block">
-            <input type="radio" name="sex" value="男" title="男" checked="">
-            <input type="radio" name="sex" value="女" title="女">
+            <input type="text" name="thisUserName" id="thisUserName" readonly lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+            <tip>填写自己管理账号的名称。</tip>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">手机</label>
+        <label class="layui-form-label">选择监测区</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-        <div class="layui-input-block">
-            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">职业</label>
-        <div class="layui-input-block">
-            <input type="text" name="work" placeholder="请输入职业" value="" class="layui-input">
+            <select name="districtId" id="districtId" lay-filter="aihao">
+                <option value="" selected=""></option>
+                <option value="1">西乡塘区</option>
+                <option value="2">良庆区</option>
+                <option value="3">江南区</option>
+                <option value="4">青秀区</option>
+                <option value="5">兴宁区</option>
+                <option value="6">武鸣区</option>
+                <option value="7">邕宁区</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注信息</label>
         <div class="layui-input-block">
-            <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+            <textarea name="msg" class="layui-textarea" placeholder="请输入备注信息"></textarea>
         </div>
     </div>
 
@@ -68,20 +65,37 @@
             layer = layui.layer,
             $ = layui.$;
 
+
+        
+        
+        var thisUserId = document.getElementById("thisUserId");
+        var thisUserName = document.getElementById("thisUserName");
+        var userId = sessionStorage.getItem("userId");
+        var userName = sessionStorage.getItem("userName");
+
+        thisUserId.value = userId;
+        thisUserName.value = userName;
+
+
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
+            dataJson = data.field;
+            $.ajax({
+                type : 'put',
+                url : 'http://localhost:8183/addmessage',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                data : dataJson,
+                dataType : 'json',
+                success : function (result) {
+                    if (result == "200"){
+                        layer.msg("添加成功");
 
-                // 关闭弹出层
-                layer.close(index);
-
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
-
+                    }else if (result == "100"){
+                        layer.msg("添加失败");
+                        return;
+                    }
+                }
             });
-
             return false;
         });
 
