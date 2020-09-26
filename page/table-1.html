@@ -19,27 +19,15 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">警报ID</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="alarmId" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
                             <label class="layui-form-label">主机</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="hostIdutocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">管理员</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="adminName" autocomplete="off" class="layui-input">
+                                <input type="text" name = "hostId" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">区域</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="districtName" id="demoReload" autocomplete="off" class="layui-input">
+                                <input type="text" name="districtId" id="districtId" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -101,25 +89,22 @@
             skin: 'line',
         });
 
-        // 监听搜索操作
-        // form.on('submit(data-search-btn)', function (data) {
-            
-        //     var result = JSON.stringify(data.field);
-        //     layer.alert(result, {
-        //         title: '最终的搜索信息'
-        //     });
-        //     // var districtName = $('#districtName');
-        //     //执行搜索重载
-        //     table.reload('currentTableId', {
-        //         page: {
-        //             curr: 1
-        //         }
-        //         , where: {
-        //             searchParams: result
-        //         }
-        //     }, 'data');
-        //     return false;
-        // });
+        //监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            dataJson = data.field;
+            console.log(dataJson)
+            $.ajax({
+                type : 'put',
+                url : 'http://localhost:8183/getsearch',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                data : dataJson,
+                dataType : 'json',
+                success : function (result) {
+                    console.log(result);
+                }
+            });
+            return false;
+        });
 
 
 

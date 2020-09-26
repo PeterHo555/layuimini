@@ -35,7 +35,7 @@
                                     <h5>系统测温总记录数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins">1234</h1>
+                                    <h1 class="no-margins" id="sum1">1234</h1>
                                     <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
                                     <small>当前测温总记录数</small>
                                 </div>
@@ -53,7 +53,7 @@
                                     <h5>温度异常总数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins">1234</h1>
+                                    <h1 class="no-margins" id="sum2">1234</h1>
                                     <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
                                     <small>当前温度异常数</small>
                                 </div>
@@ -71,7 +71,7 @@
                                     <h5>未处理异常数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins">1234</h1>
+                                    <h1 class="no-margins" id="sum3" >1234</h1>
                                     <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
                                     <small>当前分类总记录数</small>
                                 </div>
@@ -88,7 +88,7 @@
                                     <h5>已处理异常数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins">1234</h1>
+                                    <h1 class="no-margins" id="sum4">1234</h1>
                                     <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
                                     <small>当前分类总记录数</small>
                                 </div>
@@ -114,41 +114,11 @@
     layui.use(['layer', 'echarts'], function () { //独立版的layer无需执行这一句
         var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 
-        // var echartsGuage1 = echarts.init(document.getElementById('echarts-gauge1'), 'walden');
-        
-        // var optionGuage1 = {
-        //     title: {
-        //         text: '各区域近两年情况',
-        //         left: 'left'
-        //     },
-        //     legend: {},
-        //     tooltip: {},
-        //     dataset: {
-        //         dimensions: ['product', '2019', '2020'],
-        //         data: ['西乡塘区', '良庆区', '江南区', '青秀区', '邕宁区', '武鸣区','兴宁区'],
-        //         source: [
-        //             {product: '西乡塘区', '2019': 43.3, '2020': 85.8},
-        //             {product: '良庆区', '2019': 83.1, '2020': 73.4},
-        //             {product: '江南区', '2019': 86.4, '2020': 65.2},
-        //             {product: '青秀区', '2019': 72.4, '2020': 53.9},
-        //             {product: '邕宁区', '2019': 83.1, '2020': 73.4},
-        //             {product: '武鸣区', '2019': 86.4, '2020': 65.2},
-        //             {product: '兴宁区', '2019': 72.4, '2020': 53.9}
-        //         ]
-        //     },
-        //     xAxis: {type: 'category'},
-        //     yAxis: {},
-        //     // Declare several bar series, each will be mapped
-        //     // to a column of dataset.source by default.
-        //     series: [
-        //         {type: 'bar'},
-        //         {type: 'bar'},
-        //     ]
-        // };
-        // echartsGuage1.setOption(optionGuage1);
-
-
         var echartsGauge2 = echarts.init(document.getElementById('echarts-gauge2'), 'walden');
+        var sum1 = document.getElementById('sum1');
+        var sum2 = document.getElementById('sum2');
+        var sum3 = document.getElementById('sum3');
+        var sum4 = document.getElementById('sum4');
 
         var optionGauge2 = {
             title: {
@@ -187,8 +157,9 @@
             ]
         };
         
+        
         echartsGauge2.setOption(optionGauge2, true);
-        //
+        var count = 0;
 
         setInterval(function () {
             // 此处写ajax请求实时测温数据
@@ -199,7 +170,6 @@
                 dataType : 'json',
                 success : function (result) {
                     // console.log(result);
-                    console.log(result.data[4].temperature);
                     if (result.message == "200"){
                         console.log(result.data);
                         optionGauge2.series[0].data[0] = result.data[0].temperature;
@@ -246,15 +216,12 @@
                 }
             }); 
             echartsGauge2.setOption(optionGauge2, true);
+            $("#sum1").text(count++)
+            $("#sum2").text(count++)
+            $("#sum3").text(count++)
+            $("#sum4").text(count++)
         },60000);
         
-
-    
-        
-
-
-
-
         //触发事件
         var active = {
             setTop: function () {
