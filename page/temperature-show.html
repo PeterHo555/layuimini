@@ -35,8 +35,8 @@
                                     <h5>系统测温总记录数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins" id="sum1">1234</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <h1 class="no-margins" id="sum1">0</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
                                     <small>当前测温总记录数</small>
                                 </div>
                             </div>
@@ -53,8 +53,8 @@
                                     <h5>温度异常总数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins" id="sum2">1234</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <h1 class="no-margins" id="sum2">0</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
                                     <small>当前温度异常数</small>
                                 </div>
                             </div>
@@ -71,8 +71,8 @@
                                     <h5>未处理异常数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins" id="sum3" >1234</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <h1 class="no-margins" id="sum3" >0</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
                                     <small>当前分类总记录数</small>
                                 </div>
                             </div>
@@ -88,8 +88,8 @@
                                     <h5>已处理异常数</h5>
                                 </div>
                                 <div class="panel-content">
-                                    <h1 class="no-margins" id="sum4">1234</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                    <h1 class="no-margins" id="sum4">0</h1>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
                                     <small>当前分类总记录数</small>
                                 </div>
                             </div>
@@ -216,11 +216,12 @@
                 }
             }); 
             echartsGauge2.setOption(optionGauge2, true);
-            $("#sum1").text(count++)
-            $("#sum2").text(count++)
-            $("#sum3").text(count++)
-            $("#sum4").text(count++)
-        },60000);
+            $("#sum1").text(count)
+            $("#sum2").text(count)
+            $("#sum3").text(count)
+            $("#sum4").text(count)
+            count++;
+        },6000);
         
         //触发事件
         var active = {

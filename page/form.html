@@ -28,8 +28,9 @@
                         <option value="" selected=""></option>
                         <option value="1">PeterHo</option>
                         <option value="2">JayChou</option>
-                        <option value="1">AmyLee</option>
-                        <option value="2">LeoPang</option>
+                        <option value="3">AmyLee</option>
+                        <option value="4">LeoPang</option>
+                        <option value="5">WinYoung</option>
                     </select>
                 </div>
             </div>
@@ -44,9 +45,7 @@
                         <option value="2">良庆区</option>
                         <option value="3">江南区</option>
                         <option value="4">青秀区</option>
-                        <option value="5">邕宁区</option>
-                        <option value="6">武鸣区</option>
-                        <option value="7">兴宁区</option>
+                        <option value="5">兴宁区</option>
                     </select>
                 </div>
             </div>
@@ -98,22 +97,6 @@
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
 
-        // //自定义验证规则
-        // form.verify({
-        //     title: function (value) {
-        //         if (value.length < 5) {
-        //             return '标题至少得5个字符啊';
-        //         }
-        //     }
-        //     , pass: [
-        //         /^[\S]{6,12}$/
-        //         , '密码必须6到12位，且不能出现空格'
-        //     ]
-        //     , content: function (value) {
-        //         layedit.sync(editIndex);
-        //     }
-        // });
-
         //监听指定开关
         form.on('switch(switchTest)', function (data) {
             layer.msg('主机已' + (this.checked ? '开启' : '关闭'), {
@@ -124,19 +107,21 @@
 
         //监听提交
         form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
             dataJson = data.field;
-            console.log(dataJson);
+            var thisHostState = dataJson.hostState==null?0:1;
+            console.log(thisHostState);
             $.ajax({
                 type : 'post',
                 url : 'http://localhost:8183/addhost',
                 contentType : 'application/x-www-form-urlencoded; charset=utf-8',
-                data : dataJson,
+                data : {
+                    districtId:dataJson.districtId, 
+                    adminId:dataJson.adminId, 
+                    hostState:thisHostState
+                },
                 dataType : 'json',
                 success : function (result){
-                    
+                    layer.msg('新建主机成功')
                 }
             });
             return false;

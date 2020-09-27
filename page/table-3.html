@@ -53,16 +53,16 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="edit"> 编辑 </button>
+                <!-- <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="edit"> 编辑 </button> -->
             </div>
         </script>
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-        <!-- <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
-        </script> -->
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="open">开启</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="close">关闭</a>
+        </script>
 
     </div>
 </div>
@@ -84,13 +84,14 @@
             }],
             cols: [[
                 {type: "checkbox", width: 80},
-                {field: 'id', width: 100, title: 'ID', sort: true},
+                {field: 'hostId', width: 100, title: 'ID', sort: true},
                 {field: 'hostId', width: 150, title: '主机号', sort: true},
-                {field: 'districtName', width: 250, title: '区域名'},
+                {field: 'districtName', width: 150, title: '区域名'},
                 {field: 'adminId', width: 150, title: '所属管理员ID', sort: true},
                 {field: 'adminName', width: 250, title: '所属管理员'},
                 {field: 'hostState', width: 250, title: '主机状态', sort: true},
                 {field: 'lastAlarmTime', width: 300, title: '上次警报时间', sort: true},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
@@ -149,26 +150,53 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            if (obj.event === 'edit') {
+            var thisHostState = 0;
 
-                var index = layer.open({
-                    title: '编辑用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../page/form.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                });
+            if (obj.event === 'open') {
+                if(data.hostState == "主机已开启"){
+                    layer.msg("当前主机已开启");
+                    thisHostState = 1;
+                }else{
+                    thisHostState = 0;
+                    $.ajax({
+                        type : 'post',
+                        url : 'http://localhost:8183/updatehoststate',
+                        contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                        data : {
+                            hostId: data.hostId,
+                            hostState: thisHostState,
+                        },
+                        dataType : 'json',
+                        success : function (result) {
+                            layer.msg("当前主机正在开启");
+                            console.log(result);
+                        }
+                    });
+                    return false; 
+                }
+            }else if (obj.event === 'close') {
+                if(data.hostState == "主机已关闭"){
+                    layer.msg("当前主机已关闭");
+                    thisHostState = 0;
+                }else{
+                    thisHostState = 1;
+                    $.ajax({
+                        type : 'post',
+                        url : 'http://localhost:8183/updatehoststate',
+                        contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                        data : {
+                            hostId: data.hostId,
+                            hostState: thisHostState,
+                        },
+                        dataType : 'json',
+                        success : function (result) {
+                            layer.msg("当前主机正在关闭");
+                            console.log(result);
+                        }
+                    });
+                    return false; 
+                }
+
             }
         });
 

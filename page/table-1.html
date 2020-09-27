@@ -107,7 +107,6 @@
         });
 
 
-
         /**
          * toolbar监听事件
          */
@@ -141,10 +140,21 @@
                 if(data.state == "已排查"){
                     layer.msg("此异常已排查");
                 }else{
-                    layer.msg("此异常正在排查");
-                    data.state = "已排查";
+                    $.ajax({
+                        type : 'put',
+                        url : 'http://localhost:8183/updatestate',
+                        contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                        data : {
+                            id: data.id,
+                        },
+                        dataType : 'json',
+                        success : function (result) {
+                            layer.msg("此异常正在排查");
+                            console.log(result);
+                        }
+                    });
+                    return false; 
                 }
-                
             } 
             // else if (obj.event === 'delete') {
             //     layer.confirm('真的删除行么', function (index) {
