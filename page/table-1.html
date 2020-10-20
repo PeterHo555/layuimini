@@ -64,7 +64,7 @@
             
         table.render({
             elem: '#currentTableId',
-            url: 'http://localhost:8183/alarmlist',
+            url: 'http://116.62.108.118:8183/alarmlist',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -95,7 +95,7 @@
             console.log(dataJson)
             $.ajax({
                 type : 'put',
-                url : 'http://localhost:8183/getsearch',
+                url : 'http://116.62.108.118:8183/getsearch',
                 contentType : 'application/x-www-form-urlencoded; charset=utf-8',
                 data : dataJson,
                 dataType : 'json',
@@ -142,7 +142,7 @@
                 }else{
                     $.ajax({
                         type : 'put',
-                        url : 'http://localhost:8183/updatestate',
+                        url : 'http://116.62.108.118:8183/updatestate',
                         contentType : 'application/x-www-form-urlencoded; charset=utf-8',
                         data : {
                             id: data.id,

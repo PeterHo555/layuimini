@@ -64,6 +64,12 @@
               "href": "page/power-show.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
+            },
+            {
+              "title": "Echart测试",
+              "href": "page/echarts-test.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
             }
           ]
         },

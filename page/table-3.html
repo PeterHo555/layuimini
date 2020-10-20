@@ -75,7 +75,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: 'http://localhost:8183/hostlist',
+            url: 'http://116.62.108.118:8183/hostlist',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -160,7 +160,7 @@
                     thisHostState = 0;
                     $.ajax({
                         type : 'post',
-                        url : 'http://localhost:8183/updatehoststate',
+                        url : 'http://116.62.108.118:8183/updatehoststate',
                         contentType : 'application/x-www-form-urlencoded; charset=utf-8',
                         data : {
                             hostId: data.hostId,
@@ -170,6 +170,7 @@
                         success : function (result) {
                             layer.msg("当前主机正在开启");
                             console.log(result);
+                            
                         }
                     });
                     return false; 
@@ -182,7 +183,7 @@
                     thisHostState = 1;
                     $.ajax({
                         type : 'post',
-                        url : 'http://localhost:8183/updatehoststate',
+                        url : 'http://116.62.108.118:8183/updatehoststate',
                         contentType : 'application/x-www-form-urlencoded; charset=utf-8',
                         data : {
                             hostId: data.hostId,
@@ -192,6 +193,7 @@
                         success : function (result) {
                             layer.msg("当前主机正在关闭");
                             console.log(result);
+                    
                         }
                     });
                     return false; 

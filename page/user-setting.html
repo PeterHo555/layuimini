@@ -74,7 +74,7 @@
             userType.value = "管理员用户";
         }
         loginName.value = sessionStorage.getItem("loginName").toString();
-        username.value = sessionStorage.getItem("username").toString();
+        username.value = sessionStorage.getItem("userName").toString();
         phone.value = sessionStorage.getItem("phone").toString();
         email.value = sessionStorage.getItem("email").toString();
 
@@ -88,6 +88,7 @@
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
+            
             // var index = layer.alert(JSON.stringify(data.field), {
             //     title: '最终的提交信息'
             // }, function () {
@@ -98,7 +99,7 @@
             console.log(dataJson);
             $.ajax({
                 type : 'put',
-                url : 'http://localhost:8183/userUpdate',
+                url : 'http://116.62.108.118:8183/userUpdate',
                 contentType : 'application/x-www-form-urlencoded; charset=utf-8',
                 data : dataJson,
                 dataType : 'json',
@@ -124,7 +125,6 @@
             });
             return false;
         });
-
     });
 </script>
 </body>

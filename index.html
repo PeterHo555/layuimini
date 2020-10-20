@@ -109,7 +109,8 @@
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
         var adminLabel = document.getElementById("adminName");
-        var adminName = sessionStorage.getItem("username");
+        var adminName = sessionStorage.getItem("userName");
+
         adminLabel.innerText = adminName;
 
         var $ = layui.jquery,
@@ -140,7 +141,7 @@
         });
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
-                window.location = 'page/login-1.html';
+                window.location = 'login.html';
             });
         });
     });
