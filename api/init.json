@@ -60,6 +60,12 @@
               "target": "_self"
             },
             {
+              "title": "设备温度2",
+              "href": "page/temperature-show2.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
               "title": "设备功率",
               "href": "page/power-show.html",
               "icon": "fa fa-tachometer",
