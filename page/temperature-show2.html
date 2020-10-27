@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="panel-content">
                                     <h1 class="no-margins" id="sum1">0</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> </div>
                                     <small>当前测温总记录数</small>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="panel-content">
                                     <h1 class="no-margins" id="sum2">0</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> </div>
                                     <small>当前温度异常数</small>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="panel-content">
                                     <h1 class="no-margins" id="sum3" >0</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> </div>
                                     <small>当前分类总记录数</small>
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="layui-col-md3">
                     <div class="col-xs-6 col-md-3">
-                        <div class="panel layui-bg-orange">
+                        <div class="panel layui-bg-orange ">
                             <div class="panel-body">
                                 <div class="panel-title">
                                     <span class="label pull-right layui-bg-green">实时</span>
@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="panel-content">
                                     <h1 class="no-margins" id="sum4">0</h1>
-                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 0</div>
+                                    <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> </div>
                                     <small>当前分类总记录数</small>
                                 </div>
                             </div>
@@ -142,9 +142,11 @@
         var sum3 = document.getElementById('sum3');
         var sum4 = document.getElementById('sum4');
 
+        var testCount = 0;
+
        var option1 = {
             title: {
-                text: '动态数据',
+                text: '设备一温度数据',
             },
             tooltip: {
                 trigger: 'axis',
@@ -156,7 +158,7 @@
                 }
             },
             legend: {
-                data:['最新成交价', '预购队列']
+                data:['实时温度', '变化趋势']
             },
             toolbox: {
                 show: true,
@@ -181,7 +183,7 @@
                         var len = 10;
                         while (len--) {
                             res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                            now = new Date(now - 2000);
+                            now = new Date(now - 10000);
                         }
                         return res;
                     })()
@@ -203,23 +205,23 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '价格',
-                    max: 100,
+                    name: '实时温度',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 },
                 {
                     type: 'value',
                     scale: true,
-                    name: '预购量',
-                    max: 100,
+                    name: '实时变化',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 }
             ],
             series: [
                 {
-                    name: '预购队列',
+                    name: '实时温度',
                     type: 'bar',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
@@ -227,19 +229,19 @@
                         var res = [];
                         var len = 10;
                         while (len--) {
-                            res.push(Math.round(Math.random() * 100));
+                            res.push(25);
                         }
                         return res;
                     })()
                 },
                 {
-                    name: '最新成交价',
+                    name: '变化趋势',
                     type: 'line',
                     data: (function (){
                         var res = [];
                         var len = 0;
                         while (len < 10) {
-                            res.push((Math.random()*20 + 5).toFixed(1) - 0);
+                            res.push(25);
                             len++;
                         }
                         return res;
@@ -250,8 +252,7 @@
 
         var option2 = {
             title: {
-                text: '动态数据',
-                subtext: '纯属虚构'
+                text: '设备二温度数据',
             },
             tooltip: {
                 trigger: 'axis',
@@ -263,7 +264,7 @@
                 }
             },
             legend: {
-                data:['最新成交价', '预购队列']
+                data:['实时温度', '变化趋势']
             },
             toolbox: {
                 show: true,
@@ -288,7 +289,7 @@
                         var len = 10;
                         while (len--) {
                             res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                            now = new Date(now - 2000);
+                            now = new Date(now - 10000);
                         }
                         return res;
                     })()
@@ -310,23 +311,23 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '价格',
-                    max: 100,
+                    name: '实时温度',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 },
                 {
                     type: 'value',
                     scale: true,
-                    name: '预购量',
-                    max: 100,
+                    name: '实时变化',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 }
             ],
             series: [
                 {
-                    name: '预购队列',
+                    name: '实时温度',
                     type: 'bar',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
@@ -334,19 +335,19 @@
                         var res = [];
                         var len = 10;
                         while (len--) {
-                            res.push(Math.round(Math.random() * 100));
+                            res.push(25);
                         }
                         return res;
                     })()
                 },
                 {
-                    name: '最新成交价',
+                    name: '变化趋势',
                     type: 'line',
                     data: (function (){
                         var res = [];
                         var len = 0;
                         while (len < 10) {
-                            res.push((Math.random()*20 + 5).toFixed(1) - 0);
+                            res.push(25);
                             len++;
                         }
                         return res;
@@ -357,7 +358,7 @@
 
         var option3 = {
             title: {
-                text: '动态数据',
+                text: '设备三温度数据',
             },
             tooltip: {
                 trigger: 'axis',
@@ -369,7 +370,7 @@
                 }
             },
             legend: {
-                data:['最新成交价', '预购队列']
+                data:['实时温度', '变化趋势']
             },
             toolbox: {
                 show: true,
@@ -394,7 +395,7 @@
                         var len = 10;
                         while (len--) {
                             res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                            now = new Date(now - 2000);
+                            now = new Date(now - 10000);
                         }
                         return res;
                     })()
@@ -416,23 +417,23 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '价格',
-                    max: 100,
+                    name: '实时温度',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 },
                 {
                     type: 'value',
                     scale: true,
-                    name: '预购量',
-                    max: 100,
+                    name: '实时变化',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 }
             ],
             series: [
                 {
-                    name: '预购队列',
+                    name: '实时温度',
                     type: 'bar',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
@@ -440,19 +441,19 @@
                         var res = [];
                         var len = 10;
                         while (len--) {
-                            res.push(Math.round(Math.random() * 100));
+                            res.push(25);
                         }
                         return res;
                     })()
                 },
                 {
-                    name: '最新成交价',
+                    name: '变化趋势',
                     type: 'line',
                     data: (function (){
                         var res = [];
                         var len = 0;
                         while (len < 10) {
-                            res.push((Math.random()*20 + 5).toFixed(1) - 0);
+                            res.push(25);
                             len++;
                         }
                         return res;
@@ -463,7 +464,7 @@
 
         var option4 = {
             title: {
-                text: '动态数据',
+                text: '设备四温度数据',
             },
             tooltip: {
                 trigger: 'axis',
@@ -475,7 +476,7 @@
                 }
             },
             legend: {
-                data:['最新成交价', '预购队列']
+                data:['实时温度', '变化趋势']
             },
             toolbox: {
                 show: true,
@@ -500,7 +501,7 @@
                         var len = 10;
                         while (len--) {
                             res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                            now = new Date(now - 2000);
+                            now = new Date(now - 10000);
                         }
                         return res;
                     })()
@@ -522,23 +523,23 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '价格',
-                    max: 100,
+                    name: '实时温度',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 },
                 {
                     type: 'value',
                     scale: true,
-                    name: '预购量',
-                    max: 100,
+                    name: '实时变化',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 }
             ],
             series: [
                 {
-                    name: '预购队列',
+                    name: '实时温度',
                     type: 'bar',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
@@ -546,19 +547,19 @@
                         var res = [];
                         var len = 10;
                         while (len--) {
-                            res.push(Math.round(Math.random() * 100));
+                            res.push(25);
                         }
                         return res;
                     })()
                 },
                 {
-                    name: '最新成交价',
+                    name: '变化趋势',
                     type: 'line',
                     data: (function (){
                         var res = [];
                         var len = 0;
                         while (len < 10) {
-                            res.push((Math.random()*20 + 5).toFixed(1) - 0);
+                            res.push(25);
                             len++;
                         }
                         return res;
@@ -569,7 +570,7 @@
 
         var option5 = {
             title: {
-                text: '动态数据',
+                text: '设备五温度数据',
             },
             tooltip: {
                 trigger: 'axis',
@@ -581,7 +582,7 @@
                 }
             },
             legend: {
-                data:['最新成交价', '预购队列']
+                data:['实时温度', '变化趋势']
             },
             toolbox: {
                 show: true,
@@ -606,7 +607,7 @@
                         var len = 10;
                         while (len--) {
                             res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                            now = new Date(now - 2000);
+                            now = new Date(now - 10000);
                         }
                         return res;
                     })()
@@ -628,23 +629,23 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '价格',
-                    max: 100,
+                    name: '实时温度',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 },
                 {
                     type: 'value',
                     scale: true,
-                    name: '预购量',
-                    max: 100,
+                    name: '实时变化',
+                    max: 70,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
                 }
             ],
             series: [
                 {
-                    name: '预购队列',
+                    name: '实时温度',
                     type: 'bar',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
@@ -652,19 +653,19 @@
                         var res = [];
                         var len = 10;
                         while (len--) {
-                            res.push(Math.round(Math.random() * 100));
+                            res.push(25);
                         }
                         return res;
                     })()
                 },
                 {
-                    name: '最新成交价',
+                    name: '变化趋势',
                     type: 'line',
                     data: (function (){
                         var res = [];
                         var len = 0;
                         while (len < 10) {
-                            res.push((Math.random()*20 + 5).toFixed(1) - 0);
+                            res.push(25);
                             len++;
                         }
                         return res;
@@ -674,80 +675,151 @@
         };
 
 
+
         var count = 11;
+
+        echartsGauge1.setOption(option1, true);
+        echartsGauge2.setOption(option2, true);
+        echartsGauge3.setOption(option3, true);
+        echartsGauge4.setOption(option4, true);
+        echartsGauge5.setOption(option5, true);
+
+        
         setInterval(function (){
-            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
-            var data01 = option1.series[0].data;
-            var data11 = option1.series[1].data;
-            data01.shift();
-            data01.push(Math.round(Math.random() * 100));
-            data11.shift();
-            data11.push((Math.random() * 10 + 5).toFixed(1) - 0);
+            // 此处写ajax请求实时测温数据
+            $.ajax({
+                type : 'put',
+                url : 'http://116.62.108.118:8183/temperature',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                dataType : 'json',
+                success : function (result) {
+                    // console.log(result);
+                    if (result.message == "200"){
+                        console.log(result.data);
+                        var t1 = result.data[0].temperature;
+                        var t2 = result.data[1].temperature;
+                        var t3 = result.data[2].temperature;
+                        var t4 = result.data[3].temperature;
+                        var t5 = result.data[4].temperature;
+                        
+                        if(t1 > 30){
+                            layer.msg('设备1温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(t2 > 30){
+                            layer.msg('设备2温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(t3 > 30){
+                            layer.msg('设备3温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(t4 > 30){
+                            layer.msg('设备4温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
+                        if(t5 > 30){
+                            layer.msg('设备5温度出现异常', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['立刻排查', '已排查']
+                            });
+                        }
 
-            var data02 = option2.series[0].data;
-            var data12 = option2.series[1].data;
-            data02.shift();
-            data02.push(Math.round(Math.random() * 100));
-            data12.shift();
-            data12.push((Math.random() * 10 + 5).toFixed(1) - 0);
+                    }else if (result == "100"){
+                        layer.msg("信息获取失败");
+                        return;
+                    }
 
-            var data03 = option3.series[0].data;
-            var data13 = option3.series[1].data;
-            data03.shift();
-            data03.push(Math.round(Math.random() * 100));
-            data13.shift();
-            data13.push((Math.random() * 10 + 5).toFixed(1) - 0);
+                    var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
-            var data04 = option4.series[0].data;
-            var data14 = option4.series[1].data;
-            data04.shift();
-            data04.push(Math.round(Math.random() * 100));
-            data14.shift();
-            data14.push((Math.random() * 10 + 5).toFixed(1) - 0);
+                    var data01 = option1.series[0].data;
+                    var data11 = option1.series[1].data;
+                    data01.shift();
+                    data01.push(t1);
+                    data11.shift();
+                    data11.push(t1);
 
-            var data05 = option5.series[0].data;
-            var data15 = option5.series[1].data;
-            data05.shift();
-            data05.push(Math.round(Math.random() * 100));
-            data15.shift();
-            data15.push((Math.random() * 10 + 5).toFixed(1) - 0);
+                    var data02 = option2.series[0].data;
+                    var data12 = option2.series[1].data;
+                    data02.shift();
+                    data02.push(t2);
+                    data12.shift();
+                    data12.push(t2);
 
-            option1.xAxis[0].data.shift();
-            option1.xAxis[0].data.push(axisData);
-            option1.xAxis[1].data.shift();
-            option1.xAxis[1].data.push(count);
+                    var data03 = option3.series[0].data;
+                    var data13 = option3.series[1].data;
+                    data03.shift();
+                    data03.push(t3);
+                    data13.shift();
+                    data13.push(t3);
 
-            option2.xAxis[0].data.shift();
-            option2.xAxis[0].data.push(axisData);
-            option2.xAxis[1].data.shift();
-            option2.xAxis[1].data.push(count);
+                    var data04 = option4.series[0].data;
+                    var data14 = option4.series[1].data;
+                    data04.shift();
+                    data04.push(t4);
+                    data14.shift();
+                    data14.push(t4);
 
-            option3.xAxis[0].data.shift();
-            option3.xAxis[0].data.push(axisData);
-            option3.xAxis[1].data.shift();
-            option3.xAxis[1].data.push(count);
+                    var data05 = option5.series[0].data;
+                    var data15 = option5.series[1].data;
+                    data05.shift();
+                    data05.push(t5);
+                    data15.shift();
+                    data15.push(t5);
 
-            option4.xAxis[0].data.shift();
-            option4.xAxis[0].data.push(axisData);
-            option4.xAxis[1].data.shift();
-            option4.xAxis[1].data.push(count);
+                    option1.xAxis[0].data.shift();
+                    option1.xAxis[0].data.push(axisData);
+                    option1.xAxis[1].data.shift();
+                    option1.xAxis[1].data.push(count);
 
-            option5.xAxis[0].data.shift();
-            option5.xAxis[0].data.push(axisData);
-            option5.xAxis[1].data.shift();
-            option5.xAxis[1].data.push(count);
+                    option2.xAxis[0].data.shift();
+                    option2.xAxis[0].data.push(axisData);
+                    option2.xAxis[1].data.shift();
+                    option2.xAxis[1].data.push(count);
 
-            count++;
+                    option3.xAxis[0].data.shift();
+                    option3.xAxis[0].data.push(axisData);
+                    option3.xAxis[1].data.shift();
+                    option3.xAxis[1].data.push(count);
 
+                    option4.xAxis[0].data.shift();
+                    option4.xAxis[0].data.push(axisData);
+                    option4.xAxis[1].data.shift();
+                    option4.xAxis[1].data.push(count);
 
+                    option5.xAxis[0].data.shift();
+                    option5.xAxis[0].data.push(axisData);
+                    option5.xAxis[1].data.shift();
+                    option5.xAxis[1].data.push(count);
 
-            echartsGauge1.setOption(option1, true);
-            echartsGauge2.setOption(option2, true);
-            echartsGauge3.setOption(option3, true);
-            echartsGauge4.setOption(option4, true);
-            echartsGauge5.setOption(option5, true);
-        }, 3100);
+                    count++;
+
+                    echartsGauge1.setOption(option1, true);
+                    echartsGauge2.setOption(option2, true);
+                    echartsGauge3.setOption(option3, true);
+                    echartsGauge4.setOption(option4, true);
+                    echartsGauge5.setOption(option5, true);
+
+                    $("#sum1").text(++testCount);
+                    $("#sum2").text(result.count);
+                    $("#sum3").text(result.code);
+                    $("#sum4").text(result.done);
+                    
+                    
+                    
+
+                }
+            });       
+        }, 10100);
 
 
 
