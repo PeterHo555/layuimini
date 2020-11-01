@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        .top-panel {
+            border: 1px solid #eceff9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .top-panel > .layui-card-body{
+            height: 60px;
+        }
+        .top-panel-number{
+            line-height:60px;
+            font-size: 30px;
+            border-right:1px solid #eceff9;
+        }
+        .top-panel-tips{
+            line-height:30px;
+            font-size: 12px
+        }
+    </style>
+</head>
+<body>
+<!--<div class="layuimini-container">-->
+<div class="layuimini-main">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md12">
+            <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+        </div>
+       
+    </div>
+
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md9">
+            <div id="echarts-dataset" style="background-color:#ffffff;min-height:350px;padding: 10px"></div>
+        </div>
+        <div class="layui-col-xs12 layui-col-md3">
+            <div id="echarts-pies" style="background-color:#ffffff;min-height:350px;padding: 10px"></div>
+        </div>
+    </div>
+
+
+</div>
+<!--</div>-->
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['layer', 'echarts'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            echarts = layui.echarts;
+
+        /**
+         * 报表功能
+         */
+        var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+
+        var dataMap = {};
+        function dataFormatter(obj) {
+            var pList = ['北京','天津','河北','山西','内蒙古','辽宁','吉林','黑龙江'];
+            var temp;
+            for (var year = 1; year <= 12; year++) {
+                var max = 0;
+                var sum = 0;
+                temp = obj[year];
+                for (var i = 0, l = temp.length; i < l; i++) {
+                    max = Math.max(max, temp[i]);
+                    sum += temp[i];
+                    obj[year][i] = {
+                        name: pList[i],
+                        value: temp[i]
+                    };
+                }
+                obj[year + 'max'] = Math.floor(max / 100) * 100;
+                obj[year + 'sum'] = sum;
+            }
+            return obj;
+        }
+
+        dataMap.dataHost1 = dataFormatter({
+            //max : 60000,
+            1:[10,10,8,10,10,11,8,11,11,11,15,8],
+            2:[10,10,10,10,10,11,11,11,11,11,8,15],
+            3:[10,6,8,10,10,11,11,11,4,11,15,8],
+            4:[10,10,7,10,2,11,11,8,11,11,9,15],
+            5:[10,6,10,10,10,11,11,11,11,11,15,8],
+            6:[10,9,10,10,10,11,11,4,7,8,3,15],
+            7:[10,10,10,10,10,11,11,8,11,11,15,15],
+            8:[10,8,10,10,10,2,11,11,11,11,15,8],
+            9:[10,10,17,10,10,11,11,4,11,11,15,15],
+            10:[10,10,10,10,10,11,11,8,11,11,15,15],
+            11:[10,10,10,10,10,11,11,11,11,11,3,15],
+            12:[10,3,10,3,10,11,11,4,11,11,6,15],
+            
+        });
+
+        dataMap.dataHost2 = dataFormatter({
+            //max : 4000,
+            1:[10,10,10,10,10,11,3,11,5,11,15,2],
+            2:[10,2,10,10,10,11,11,6,11,11,15,15],
+            3:[6,2,10,10,10,11,11,6,11,11,15,2],
+            4:[10,10,10,10,10,11,11,6,11,11,15,15],
+            5:[4,2,10,10,10,11,11,11,6,11,15,15],
+            6:[10,10,10,10,10,11,11,11,11,11,15,15],
+            7:[10,10,10,5,10,11,11,6,11,11,15,15],
+            8:[4,10,10,10,10,8,11,11,8,11,15,15],
+            9:[10,10,10,10,10,11,11,11,2,11,7,15],
+            10:[10,10,3,10,8,8,11,6,11,11,15,2],
+            11:[6,10,10,10,10,8,8,11,11,11,15,15],
+            12:[10,1,8,8,10,11,8,7,11,11,15,15],
+        });
+
+        dataMap.dataHost3 = dataFormatter({
+            //max : 26600,
+            1:[10,10,10,10,10,11,3,11,5,11,15,2],
+            2:[10,2,10,10,10,11,11,6,11,11,15,15],
+            3:[6,2,10,10,10,11,11,6,11,11,15,2],
+            4:[10,10,10,8,3,11,7,6,11,11,15,15],
+            5:[4,2,10,10,7,11,11,11,6,11,15,15],
+            6:[10,10,10,10,10,7,11,11,11,11,15,15],
+            7:[10,10,10,5,3,11,11,6,11,11,15,15],
+            8:[4,10,10,7,10,8,11,11,8,11,15,15],
+            9:[10,10,10,10,10,11,11,11,2,11,7,15],
+            10:[10,10,3,10,8,8,11,6,11,11,15,2],
+            11:[6,10,10,10,10,8,8,11,11,11,15,15],
+            12:[10,1,8,8,10,11,8,7,11,11,15,15],
+            });
+
+        dataMap.dataHost4 = dataFormatter({
+            //max : 25000,
+            1:[10,4,3,10,3,11,11,11,11,11,15,15],
+            2:[6,10,10,10,10,11,11,11,11,11,15,15],
+            3:[5,2,10,10,10,11,2,4,11,11,4,15],
+            4:[4,10,10,10,5,11,3,4,11,11,15,4],
+            5:[3,2,10,10,10,1,11,11,11,11,5,15],
+            6:[2,10,3,5,3,11,11,4,11,11,6,15],
+            7:[10,2,3,5,10,6,11,11,4,11,15,15],
+            8:[1,10,3,6,3,11,11,4,11,11,15,15],
+            9:[10,10,4,7,10,11,5,11,11,11,15,15],
+            10:[10,10,10,10,10,11,4,11,11,11,4,15],
+            11:[7,10,10,7,10,11,11,4,11,11,15,15],
+            12:[9,10,4,10,10,11,11,4,11,11,15,15],
+        });
+
+        dataMap.dataHost5 = dataFormatter({
+            //max : 3600,
+            1:[10,10,8,10,10,11,8,11,11,11,15,8],
+            2:[10,10,10,10,10,11,11,11,11,11,8,15],
+            3:[10,6,8,10,10,11,5,11,4,11,15,8],
+            4:[10,10,7,10,2,11,5,8,11,11,9,15],
+            5:[10,6,10,10,10,11,5,11,11,11,15,8],
+            6:[10,9,10,10,10,11,1,4,7,8,3,15],
+            7:[10,10,10,10,10,11,11,8,11,11,15,15],
+            8:[10,8,10,10,10,2,6,1,11,11,15,8],
+            9:[10,10,17,10,10,11,11,4,11,11,15,15],
+            10:[10,10,10,10,10,11,11,8,11,11,15,15],
+            11:[10,10,10,10,10,1,11,11,11,11,3,15],
+            12:[10,3,10,3,10,11,11,4,11,11,6,15],
+        });
+
+        option = {
+            baseOption: {
+                timeline: {
+                    axisType: 'category',
+                    // realtime: false,
+                    // loop: false,
+                    autoPlay: true,
+                    // currentIndex: 2,
+                    playInterval: 2000,
+                    // controlStyle: {
+                    //     position: 'left'
+                    // },
+                    data: [
+                    '2011-01-01',
+                    '2012-01-01',
+                    '2013-01-01',
+                    '2014-01-01',
+                    '2015-01-01',
+                    '2016-01-01', 
+                    '2017-01-01',
+                    '2018-01-01',
+                    '2019-01-01',
+                    '2020-01-01',
+                    ],
+                    label: {
+                        formatter : function(s) {
+                            return (new Date(s)).getFullYear();
+                        }
+                    }
+                },
+                title: {
+                    subtext: '近十年情况'
+                },
+                tooltip: {
+                },
+                legend: {
+                    left: 'right',
+                    data: ['1号主机', '2号主机', '3号主机', '4号主机', '5号主机'],
+                    // selected: {
+                    //     'GDP': false, '金融': false, '房地产': false
+                    // }
+                },
+                calculable : true,
+                grid: {
+                    top: 80,
+                    bottom: 100,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow',
+                            label: {
+                                show: true,
+                                formatter: function (params) {
+                                    return params.value.replace('\n', '');
+                                }
+                            }
+                        }
+                    }
+                },
+                xAxis: [
+                    {
+                        'type':'category',
+                        'axisLabel':{'interval':0},
+                        'data':[
+                            '1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'
+                        ],
+                        splitLine: {show: false}
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '监测异常情况'
+                    }
+                ],
+                series: [
+                    {name: '1号主机', type: 'bar'},
+                    {name: '2号主机', type: 'bar'},
+                    {name: '3号主机', type: 'bar'},
+                    {name: '4号主机', type: 'bar'},
+                    {name: '5号主机', type: 'bar'},
+                    {
+                        name: 'GDP占比',
+                        type: 'pie',
+                        center: ['70%', '20%'],
+                        radius: '25%',
+                        z: 100
+                    }
+                ]
+            },
+            options: [
+                {
+                    title: {text: '温度异常情况'},
+                    series: [
+                        {data: dataMap.dataHost1['1']},
+                        {data: dataMap.dataHost2['1']},
+                        {data: dataMap.dataHost3['1']},
+                        {data: dataMap.dataHost4['1']},
+                        {data: dataMap.dataHost5['1']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['1sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['1sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['1sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['1sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['1sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['2']},
+                        {data: dataMap.dataHost2['2']},
+                        {data: dataMap.dataHost3['2']},
+                        {data: dataMap.dataHost4['2']},
+                        {data: dataMap.dataHost5['2']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['2sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['2sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['2sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['2sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['2sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['3']},
+                        {data: dataMap.dataHost2['3']},
+                        {data: dataMap.dataHost3['3']},
+                        {data: dataMap.dataHost4['3']},
+                        {data: dataMap.dataHost5['3']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['3sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['3sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['3sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['3sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['3sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['4']},
+                        {data: dataMap.dataHost2['4']},
+                        {data: dataMap.dataHost3['4']},
+                        {data: dataMap.dataHost4['4']},
+                        {data: dataMap.dataHost5['4']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['4sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['4sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['4sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['4sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['4sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['5']},
+                        {data: dataMap.dataHost2['5']},
+                        {data: dataMap.dataHost3['5']},
+                        {data: dataMap.dataHost4['5']},
+                        {data: dataMap.dataHost5['5']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['5sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['5sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['5sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['5sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['5sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['6']},
+                        {data: dataMap.dataHost2['6']},
+                        {data: dataMap.dataHost3['6']},
+                        {data: dataMap.dataHost4['6']},
+                        {data: dataMap.dataHost5['6']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['6sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['6sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['6sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['6sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['6sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['7']},
+                        {data: dataMap.dataHost2['7']},
+                        {data: dataMap.dataHost3['7']},
+                        {data: dataMap.dataHost4['7']},
+                        {data: dataMap.dataHost5['7']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['7sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['7sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['7sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['7sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['7sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['8']},
+                        {data: dataMap.dataHost2['8']},
+                        {data: dataMap.dataHost3['8']},
+                        {data: dataMap.dataHost4['8']},
+                        {data: dataMap.dataHost5['8']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['8sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['8sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['8sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['8sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['8sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['9']},
+                        {data: dataMap.dataHost2['9']},
+                        {data: dataMap.dataHost3['9']},
+                        {data: dataMap.dataHost4['9']},
+                        {data: dataMap.dataHost5['9']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['9sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['9sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['9sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['9sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['9sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                    {data: dataMap.dataHost1['10']},
+                        {data: dataMap.dataHost2['10']},
+                        {data: dataMap.dataHost3['10']},
+                        {data: dataMap.dataHost4['10']},
+                        {data: dataMap.dataHost5['10']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['10sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['10sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['10sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['10sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['10sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                    {data: dataMap.dataHost1['11']},
+                        {data: dataMap.dataHost2['11']},
+                        {data: dataMap.dataHost3['11']},
+                        {data: dataMap.dataHost4['11']},
+                        {data: dataMap.dataHost5['11']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['11sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['11sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['11sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['11sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['11sum']},
+                        ]}
+                    ]
+                },
+                {
+                    title : {text: '温度异常情况'},
+                    series : [
+                        {data: dataMap.dataHost1['12']},
+                        {data: dataMap.dataHost2['12']},
+                        {data: dataMap.dataHost3['12']},
+                        {data: dataMap.dataHost4['12']},
+                        {data: dataMap.dataHost5['12']},
+                        {data: [
+                            {name: '1号主机', value: dataMap.dataHost1['12sum']},
+                            {name: '2号主机', value: dataMap.dataHost2['12sum']},
+                            {name: '3号主机', value: dataMap.dataHost3['12sum']},
+                            {name: '4号主机', value: dataMap.dataHost4['12sum']},
+                            {name: '5号主机', value: dataMap.dataHost5['12sum']},
+                        ]}
+                    ]
+                }
+            ]
+        };
+
+        echartsRecords.setOption(option);
+
+
+        /**
+         * 玫瑰图表
+         */
+        var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
+        var optionPies = {
+            title: {
+                text: '各区域故障情况',
+                left: 'left'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            // legend: {
+            //     orient: 'vertical',
+            //     left: 'left',
+            //     data: ['西乡塘区', '良庆区', '江南区', '青秀区', '邕宁区', '武鸣区','兴宁区']
+            // },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['55%', '50%'],
+                    roseType: 'radius',
+                    data: [
+                        {value: 335, name: '西乡塘区'},
+                        {value: 310, name: '良庆区'},
+                        {value: 234, name: '江南区'},
+                        {value: 198, name: '青秀区'},
+                        {value: 368, name: '邕宁区'},
+                        {value: 212, name: '武鸣区'},
+                        {value: 268, name: '兴宁区'}
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        echartsPies.setOption(optionPies);
+
+
+        /**
+         * 柱状图
+         */
+        var echartsDataset = echarts.init(document.getElementById('echarts-dataset'), 'walden');
+
+        var optionRecords = {
+            title: {
+                text: '近一年故障情况'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                top:'8%',
+                data: ['警报情况']
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top:'15%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月','11月','12月']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+               
+                {
+                    name: '兴宁区',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    areaStyle: {},
+                    data: [82, 93, 90, 93, 129, 133, 132, 82, 93, 90, 93, 129]
+                }
+            ]
+        };
+
+        echartsDataset.setOption(optionRecords);
+
+
+        // /**
+        //  * 中国地图
+        //  */
+        // var echartsMap = echarts.init(document.getElementById('echarts-map'), 'walden');
+
+
+        // var optionMap = {
+        //     legend: {},
+        //     tooltip: {
+        //         trigger: 'axis',
+        //         showContent: false
+        //     },
+        //     dataset: {
+        //         source: [
+        //             ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
+        //             ['Matcha Latte', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7],
+        //             ['Milk Tea', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1],
+        //             ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
+        //             ['Walnut Brownie', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1]
+        //         ]
+        //     },
+        //     xAxis: {type: 'category'},
+        //     yAxis: {gridIndex: 0},
+        //     grid: {top: '55%'},
+        //     series: [
+        //         {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+        //         {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+        //         {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+        //         {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+        //         {
+        //             type: 'pie',
+        //             id: 'pie',
+        //             radius: '30%',
+        //             center: ['50%', '25%'],
+        //             label: {
+        //                 formatter: '{b}: {@2012} ({d}%)'
+        //             },
+        //             encode: {
+        //                 itemName: 'product',
+        //                 value: '2012',
+        //                 tooltip: '2012'
+        //             }
+        //         }
+        //     ]
+        // };
+
+        // echartsMap.setOption(optionMap);
+
+
+        // echarts 窗口缩放自适应
+        window.onresize = function () {
+            echartsRecords.resize();
+        }
+
+    });
+</script>
+</body>
+</html>

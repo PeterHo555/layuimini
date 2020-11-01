@@ -345,6 +345,8 @@
 </div>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../js/lay-module/echarts/echarts.min.js" charset="utf-8"></script>
+
 <script>
     layui.use(['layer', 'miniTab','echarts'], function () {
         var $ = layui.jquery,
@@ -443,7 +445,106 @@
                 }
             ]
         };
-        echartsRecords.setOption(optionRecords);
+        // echartsRecords.setOption(optionRecords);
+
+
+
+
+        var data = [
+            {name: '青岛', value: 150},
+        ];
+        var geoCoordMap = {
+            '青岛':[120.33,36.07],
+        };
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value)
+                    });
+                }
+            }
+            return res;
+        };
+
+        option = {
+            title: {
+                text: '全国主要城市空气质量 - 百度地图',
+                left: 'center'
+            },
+            tooltip : {
+                trigger: 'item'
+            },
+            bmap: {
+                center: [104.114129, 37.550339],
+                zoom: 5,
+                roam: true,
+            },
+            series : [
+                {
+                    name: 'pm2.5',
+                    type: 'scatter',
+                    coordinateSystem: 'bmap',
+                    data: convertData(data),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    encode: {
+                        value: 2
+                    },
+                    label: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    },
+                    itemStyle: {
+                        color: 'purple'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true
+                        }
+                    }
+                },
+                {
+                    name: 'Top 5',
+                    type: 'effectScatter',
+                    coordinateSystem: 'bmap',
+                    data: convertData(data.sort(function (a, b) {
+                        return b.value - a.value;
+                    }).slice(0, 6)),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    encode: {
+                        value: 2
+                    },
+                    showEffectOn: 'render',
+                    rippleEffect: {
+                        brushType: 'stroke'
+                    },
+                    hoverAnimation: true,
+                    label: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: true
+                    },
+                    itemStyle: {
+                        color: 'purple',
+                        shadowBlur: 10,
+                        shadowColor: '#333'
+                    },
+                    zlevel: 1
+                }
+            ]
+        };
+
+
+        echartsRecords.setOption(option);
+
 
         // echarts 窗口缩放自适应
         window.onresize = function(){
