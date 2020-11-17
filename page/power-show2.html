@@ -27,23 +27,23 @@
         
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs12 layui-col-md6">
-                <div id="echarts-gauge1" style="background-color:#ffffff;min-height:340px;padding: 5px"></div>
+                <div id="echarts-gauge1" style="background-color:#ffffff;min-height:320px;padding: 5px"></div>
             </div>
             <div class="layui-col-xs12 layui-col-md6">
-                <div id="echarts-gauge2" style="background-color:#ffffff;min-height:340px;padding: 5px"></div>
+                <div id="echarts-gauge2" style="background-color:#ffffff;min-height:320px;padding: 5px"></div>
             </div>
         </div>
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs12 layui-col-md6">
-                <div id="echarts-gauge3" style="background-color:#ffffff;min-height:340px;padding: 5px"></div>
+                <div id="echarts-gauge3" style="background-color:#ffffff;min-height:320px;padding: 5px"></div>
             </div>
             <div class="layui-col-md6">
-                <div class="layui-card">
+                <div class="layui-card" style="height: 320px;">
                     <div class="layui-card-header"><i class="fa fa-cloud icon"></i> 数据显示</div>
                     <div class="layui-card-body">
                         <div class="welcome-module">
                             <div class="layui-row layui-col-space10">
-                                <div class="layui-col-xs6">
+                                <div class="layui-col-xs6" style="padding:0px">
                                     <div class="panel layui-bg-number">
                                         <div class="panel-body">
                                             <div class="panel-title">
@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-xs6">
+                                <div class="layui-col-xs6" style="padding:0px">
                                     <div class="panel layui-bg-number">
                                         <div class="panel-body">
                                             <div class="panel-title">
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-xs6">
+                                <div class="layui-col-xs6" style="padding:0px">
                                     <div class="panel layui-bg-number">
                                         <div class="panel-body">
                                             <div class="panel-title">
@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="layui-col-xs6">
+                                <div class="layui-col-xs6" style="padding:0px">
                                     <div class="panel layui-bg-number">
                                         <div class="panel-body">
                                             <div class="panel-title">
@@ -107,7 +107,7 @@
     
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs12 layui-col-md12">
-                <div id="echarts-gauge0" style="background-color:#ffffff;min-height:340px;padding: 5px"></div>
+                <div id="echarts-gauge0" style="background-color:#ffffff;min-height:320px;padding: 5px"></div>
             </div>
         </div>
     
@@ -184,14 +184,14 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '数据变化',
+                    name: '功率/W 电压/V 电流/mA',
                     boundaryGap: [0.2, 0.2]
                 },
           
             ],
             series: [
                 {
-                    name: '功率',
+                    name: '功率 / W',
                     type: 'bar',
                  
                     data: (function (){
@@ -204,7 +204,7 @@
                     })()
                 },
                 {
-                    name: '电压',
+                    name: '电压 / V',
                     type: 'bar',
             
                     data: (function (){
@@ -217,7 +217,7 @@
                     })()
                 },
                 {
-                    name: '电流',
+                    name: '电流 / mA',
                     type: 'bar',
                
                     data: (function (){
@@ -503,7 +503,7 @@
                     data001.shift();
                     data001.push(voltage);
                     data002.shift();
-                    data002.push(electricity);
+                    data002.push(electricity * 1000);
 
 
 

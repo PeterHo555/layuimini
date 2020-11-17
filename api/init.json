@@ -64,7 +64,13 @@
               "href": "page/power-show2.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
-            }       
+            },
+            {
+              "title": "功率分解",
+              "href": "page/power-decomposition.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }     
           ]
         },
         {

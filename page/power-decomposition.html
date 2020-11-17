@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+</head>
+
+<style>
+    .layui-top-box {padding:40px 20px 20px 20px;color:#fff}
+    .panel {margin:15px;background-color:#fff;border:1px solid transparent;border-radius:3px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}
+    .panel-body {padding:15px}
+    .panel-title {margin-top:0;margin-bottom:0;font-size:14px;color:inherit}
+    .label {display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em; margin-top: .3em;}
+    .layui-red {color:red}
+    .main_btn > p {height:40px;}
+</style>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs12 layui-col-md6">
+                <div id="echarts-gauge" style="background-color:#ffffff;min-height:450px;padding: 10px"></div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md6">
+                <div id="echarts-pies" style="background-color:#ffffff;min-height:450px;padding: 10px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../js/lay-module/echarts/echartsTheme.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use(['layer', 'echarts'], function () { //独立版的layer无需执行这一句
+        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+        var xAxisLen = 10;
+
+        var averagePowerOld = 0;
+
+        var optionLine = {
+            title: {
+                text: '设备功率数据',
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#283b56'
+                    }
+                }
+            },
+            legend: {
+                data:['功率变化趋势']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            dataZoom: {
+                show: false,
+                start: 0,
+                end: 100
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: true,
+                    data: (function (){
+                        var now = new Date();
+                        var res = [];
+                        var len = xAxisLen;
+                        while (len--) {
+                            res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+                            now = new Date(now - 10000);
+                        }
+                        return res;
+                    })()
+                },               
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    scale: true,
+                    name: '功率 / W',
+                    boundaryGap: [0.2, 0.2]
+                },
+               
+            ],
+            series: [
+                {
+                    name: '功率变化趋势',
+                    type: 'line',
+                    data: (function (){
+                        var res = [];
+                        var len = 0;
+                        while (len < xAxisLen) {
+                            res.push(25);
+                            len++;
+                        }
+                        return res;
+                    })()
+                }
+            ]
+        };
+        
+        var echartsGauge = echarts.init(document.getElementById('echarts-gauge'), 'walden');
+
+        echartsGauge.setOption(optionLine,true);
+         /**
+         * 玫瑰图表
+         */
+        var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
+        var optionPies = {
+            title: {
+                text: '功率分解情况',
+                left: 'left'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'right',
+                data: ['设备1', '设备2', '设备3', '设备4'],
+                selected: {
+                    '设备1': false, '设备2': false, '设备3': false, '设备4': false
+                }
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['55%', '50%'],
+                    // roseType: 'radius',
+                    data: [
+                        {value: 0, name: '设备1'},
+                        {value: 0, name: '设备2'},
+                        {value: 0, name: '设备3'},
+                        {value: 0, name: '设备4'},
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        echartsPies.setOption(optionPies);
+
+        var power = 150
+        setInterval(function () {
+            // 获取功率数据形成折线图
+            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+            var data02 = optionLine.series[0].data;
+            data02.shift();
+            data02.push(power);
+            optionLine.xAxis[0].data.shift();
+            optionLine.xAxis[0].data.push(axisData);
+            echartsGauge.setOption(optionLine, true);
+            power++;
+        },2000);
+
+        var count = -1;
+        
+        setInterval(function () {
+
+            //根据回调的功率重新赋值
+            averagePowerOld = 0;
+            
+            // 根据当前总功率数据分解成小功率数据
+
+            var power1 = 20;
+            var power2 = 40;
+            var power3 = 60;
+            var power4 = 80;
+
+
+            optionPies.series[0].data[0].value = power1;
+            optionPies.series[0].data[1].value = power2;
+            optionPies.series[0].data[2].value = power3;
+            optionPies.series[0].data[3].value = power4;
+            count++;
+            if(count % 8 == 0){
+                optionPies.legend.selected.设备1 = true;
+            }
+            if(count % 8 == 1){
+                optionPies.legend.selected.设备2 = true;
+            }
+            if(count % 8 == 2){
+                optionPies.legend.selected.设备3 = true;
+            }
+            if(count % 8 == 3){
+                optionPies.legend.selected.设备4 = true;
+            }
+            if(count % 8 == 4){
+                optionPies.legend.selected.设备1 = false;
+            }
+            if(count % 8 == 5){
+                optionPies.legend.selected.设备2 = false;
+            }
+            if(count % 8 == 6){
+                optionPies.legend.selected.设备3 = false;
+            }
+            if(count % 8 == 7){
+                optionPies.legend.selected.设备4 = false;
+            }
+
+            
+
+            echartsPies.setOption(optionPies, true);
+
+        },5000);
+        
+        //触发事件
+        var active = {
+            setTop: function () {
+                var that = this;
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '当你选择该窗体时，即会在最顶端'
+                    , area: ['390px', '260px']
+                    , shade: 0
+                    , maxmin: true
+                    , offset: [ //为了演示，随机坐标
+                        Math.random() * ($(window).height() - 300)
+                        , Math.random() * ($(window).width() - 390)
+                    ]
+                    , content: '//layer.layui.com/test/settop.html'
+                    , btn: ['继续弹出', '全部关闭'] //只是为了演示
+                    , yes: function () {
+                        $(that).click();
+                    }
+                    , btn2: function () {
+                        layer.closeAll();
+                    }
+
+                    , zIndex: layer.zIndex //重点1
+                    , success: function (layero) {
+                        layer.setTop(layero); //重点2
+                    }
+                });
+            }
+            , confirmTrans: function () {
+                //配置一个透明的询问框
+                layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
+                    time: 20000, //20s后自动关闭
+                    btn: ['明白了', '知道了', '哦']
+                });
+            }
+            , notice: function () {
+                //示范一个公告层
+                layer.open({
+                    type: 1
+                    , title: false //不显示标题栏
+                    , closeBtn: false
+                    , area: '300px;'
+                    , shade: 0.8
+                    , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    , btn: ['火速围观', '残忍拒绝']
+                    , btnAlign: 'c'
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
+                    , success: function (layero) {
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: 'http://www.layui.com/'
+                            , target: '_blank'
+                        });
+                    }
+                });
+            }
+            , offset: function (othis) {
+                var type = othis.data('type')
+                    , text = othis.text();
+
+                layer.open({
+                    type: 1
+                    , offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                    , id: 'layerDemo' + type //防止重复弹出
+                    , content: '<div style="padding: 20px 100px;">' + text + '</div>'
+                    , btn: '关闭全部'
+                    , btnAlign: 'c' //按钮居中
+                    , shade: 0 //不显示遮罩
+                    , yes: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        };
+
+        $('#layerDemo .layui-btn').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+    });
+</script>
+
+</body>
+</html>
