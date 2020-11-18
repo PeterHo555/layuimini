@@ -24,6 +24,9 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
         <div class="layui-row layui-col-space15">
+            <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+                <legend id="countSum">功率分解进度</legend>
+            </fieldset>
             <div class="layui-col-xs12 layui-col-md6">
                 <div id="echarts-gauge" style="background-color:#ffffff;min-height:450px;padding: 10px"></div>
             </div>
@@ -39,8 +42,8 @@
 <script src="../js/lay-module/echarts/echartsTheme.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
-    layui.use(['layer', 'echarts'], function () { //独立版的layer无需执行这一句
-        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+    layui.use(['layer', 'echarts', 'element'], function () { //独立版的layer无需执行这一句
+        var $ = layui.jquery, layer = layui.layer, element = layui.element; //独立版的layer无需执行这一句
         var xAxisLen = 10;
 
         var averagePowerOld = 0;
@@ -107,7 +110,7 @@
                         var res = [];
                         var len = 0;
                         while (len < xAxisLen) {
-                            res.push(25);
+                            res.push(0);
                             len++;
                         }
                         return res;
@@ -135,9 +138,9 @@
             legend: {
                 orient: 'vertical',
                 left: 'right',
-                data: ['设备1', '设备2', '设备3', '设备4'],
+                data: ['设备1', '设备2', '设备3'],
                 selected: {
-                    '设备1': false, '设备2': false, '设备3': false, '设备4': false
+                    '设备1': false, '设备2': false, '设备3': false
                 }
             },
             series: [
@@ -151,7 +154,6 @@
                         {value: 0, name: '设备1'},
                         {value: 0, name: '设备2'},
                         {value: 0, name: '设备3'},
-                        {value: 0, name: '设备4'},
                     ],
                     emphasis: {
                         itemStyle: {
@@ -167,67 +169,88 @@
 
         var power = 150
         setInterval(function () {
-            // 获取功率数据形成折线图
-            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-            var data02 = optionLine.series[0].data;
-            data02.shift();
-            data02.push(power);
-            optionLine.xAxis[0].data.shift();
-            optionLine.xAxis[0].data.push(axisData);
-            echartsGauge.setOption(optionLine, true);
-            power++;
+            $.ajax({
+                type : 'get',
+                url : 'http://116.62.108.118:8183/geteledata',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                dataType : 'json',
+                success : function (result) {
+                    // console.log(result);
+                    if (result.message == "200"){
+                        var voltage = result.data[0].voltage;
+                        var electricity = result.data[0].electricity;
+                        var power = result.data[0].power;
+                        // if(t3 > 30){
+                        //     layer.msg('设备3温度出现异常', {
+                        //         time: 20000, //20s后自动关闭
+                        //         btn: ['立刻排查', '已排查']
+                        //     });
+                        // }
+                    }else if (result == "100"){
+                        layer.msg("信息获取失败");
+                        return;
+                    }
+                    // 获取功率数据形成折线图
+                    var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+                    var data02 = optionLine.series[0].data;
+                    data02.shift();
+                    data02.push(power);
+                    optionLine.xAxis[0].data.shift();
+                    optionLine.xAxis[0].data.push(axisData);
+                    echartsGauge.setOption(optionLine, true);
+                    power++;
+                }
+            });
         },2000);
 
         var count = -1;
-        
+
         setInterval(function () {
-
-            //根据回调的功率重新赋值
-            averagePowerOld = 0;
             
-            // 根据当前总功率数据分解成小功率数据
-
-            var power1 = 20;
-            var power2 = 40;
-            var power3 = 60;
-            var power4 = 80;
-
-
-            optionPies.series[0].data[0].value = power1;
-            optionPies.series[0].data[1].value = power2;
-            optionPies.series[0].data[2].value = power3;
-            optionPies.series[0].data[3].value = power4;
-            count++;
-            if(count % 8 == 0){
-                optionPies.legend.selected.设备1 = true;
-            }
-            if(count % 8 == 1){
-                optionPies.legend.selected.设备2 = true;
-            }
-            if(count % 8 == 2){
-                optionPies.legend.selected.设备3 = true;
-            }
-            if(count % 8 == 3){
-                optionPies.legend.selected.设备4 = true;
-            }
-            if(count % 8 == 4){
-                optionPies.legend.selected.设备1 = false;
-            }
-            if(count % 8 == 5){
-                optionPies.legend.selected.设备2 = false;
-            }
-            if(count % 8 == 6){
-                optionPies.legend.selected.设备3 = false;
-            }
-            if(count % 8 == 7){
-                optionPies.legend.selected.设备4 = false;
-            }
-
+            $("#countSum").text(++count);
             
-
+            $.ajax({
+                type : 'get',
+                url : 'http://116.62.108.118:8183/edgedetection',
+                contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+                data : {"averagePowerOld" : averagePowerOld},
+                dataType : 'json',
+                success : function (result) {
+                    console.log(result);
+                    // state 为true表示有设备新增，或无新增
+                    if (result.state) {
+                        // if(result.deviceId == 0){ // 无新增
+                        // }else 
+                        if(result.deviceId == 1){ // 新增设备1
+                            optionPies.series[0].data[0].value = result.addRate;
+                            optionPies.legend.selected.设备1 = true;
+                        } else if(result.deviceId == 2){// 新增设备2
+                            optionPies.series[0].data[1].value = result.addRate;
+                            optionPies.legend.selected.设备2 = true;
+                        } else if(result.deviceId == 3){// 新增设备3
+                            optionPies.series[0].data[2].value = result.addRate;
+                            optionPies.legend.selected.设备3 = true;
+                        }
+                    } else { // 表示有设备减少
+                        if(result.deviceId == 1){// 减少设备1
+                            optionPies.legend.selected.设备1 = false;
+                            
+                        } else if(result.deviceId == 2){// 减少设备2
+                            optionPies.legend.selected.设备2 = false;
+                            
+                        } else if(result.deviceId == 3){// 减少设备3
+                            optionPies.legend.selected.设备3 = false;
+                            
+                        }
+                    }
+                    // 替换现在的功率
+                    // 根据回调的功率重新赋值
+                    averagePowerOld = result.power;
+                }
+            });
             echartsPies.setOption(optionPies, true);
 
-        },5000);
+        },10000);
         
         //触发事件
         var active = {
